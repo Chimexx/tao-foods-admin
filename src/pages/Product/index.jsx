@@ -15,9 +15,21 @@ import {
 	Stock,
 	Cat,
 	EditProduct,
+	RadioDiv,
+	Update,
 	InputGroup,
+	SwitchGroup,
+	UpdateBtn,
 } from "./Product.styles";
-import { Button, FormControlLabel, Switch, TextField } from "@material-ui/core";
+import {
+	Button,
+	FormControl,
+	FormControlLabel,
+	FormLabel,
+	Radio,
+	RadioGroup,
+	TextField,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 		"& > *": {
 			margin: theme.spacing(1),
 			padding: "5px 5px",
+			height: "50px",
 		},
 	},
 	input: {
@@ -35,13 +48,19 @@ const useStyles = makeStyles((theme) => ({
 const Product = () => {
 	const classes = useStyles();
 
-	const [state, setState] = React.useState({
-		checkedA: true,
-		checkedB: true,
-	});
+	const [requireSauce, setRequireStock] = React.useState("false");
+	const [inStock, setInStock] = React.useState("true");
+	const [title, setTitle] = React.useState("");
+	const [price, setPrice] = React.useState("");
+	const [description, setDescription] = React.useState([]);
+	const [categories, setCategories] = React.useState([]);
+	const [image, setImage] = React.useState();
 
-	const handleChange = (event) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
+	const handleInStock = (event) => {
+		setInStock(event.target.value);
+	};
+	const handleReqSauce = (event) => {
+		setRequireStock(event.target.value);
 	};
 
 	return (
@@ -82,63 +101,109 @@ const Product = () => {
 				<EditProduct>
 					<InputGroup>
 						<TextField
-							className="input"
+							// className="input"
 							label="Item Name"
 							id="filled-size-small"
-							defaultValue=""
+							defaultValue={title}
 							variant="filled"
 							size="small"
+							className={classes.root}
 						/>
 						<TextField
-							className="input"
+							// className="input"
 							label="Item Description"
 							id="filled-size-small"
-							defaultValue=""
+							defaultValue={description}
 							variant="filled"
 							size="small"
+							className={classes.root}
 						/>
 						<TextField
-							className="input"
+							// className="input"
 							label="Item Price"
 							id="filled-size-small"
 							type="number"
 							defaultValue=""
 							variant="filled"
 							size="small"
+							className={classes.root}
 						/>
 						<TextField
-							className="input"
+							// className="input"
 							label="Item Categories"
 							id="filled-size-small"
 							defaultValue=""
 							variant="filled"
 							size="small"
+							className={classes.root}
 						/>
-						<div className={classes.root}>
+						<div className={classes.root} style={{ marginTop: "10px", padding: 0 }}>
 							<input
 								accept="image/*"
 								className={classes.input}
 								id="contained-button-file"
 								type="file"
 							/>
-							<label htmlFor="contained-button-file">
+							<label htmlFor="contained-button-file" style={{ margin: "5px" }}>
 								<Button variant="contained" color="default" component="span">
-									Upload
+									Update Image
 								</Button>
 							</label>
 						</div>
-						<FormControlLabel
-							control={
-								<Switch
-									checked={state.checkedB}
-									onChange={handleChange}
-									name="checkedB"
-									color="Primary"
-								/>
-							}
-							label="In Stock"
-						/>
 					</InputGroup>
+					<Hr />
+					<SwitchGroup>
+						<FormControl component="fieldset" className="formControl">
+							<RadioDiv>
+								<FormLabel component="legend" className="radioText">
+									In Stock
+								</FormLabel>
+								<RadioGroup
+									aria-label="instock"
+									name="instock"
+									value={inStock}
+									onChange={handleInStock}
+								>
+									<FormControlLabel
+										value="true"
+										control={<Radio className="radio" />}
+										label="Yes"
+									/>
+									<FormControlLabel
+										value="false"
+										control={<Radio className="radio" />}
+										label="No"
+									/>
+								</RadioGroup>
+							</RadioDiv>
+							<RadioDiv>
+								<FormLabel component="legend" className="radioText">
+									Require Sauce
+								</FormLabel>
+								<RadioGroup
+									aria-label="reqSauce"
+									name="reqSauce"
+									value={requireSauce}
+									onChange={handleReqSauce}
+								>
+									<FormControlLabel
+										value="true"
+										control={<Radio className="radio" />}
+										label="Yes"
+									/>
+									<FormControlLabel
+										value="false"
+										control={<Radio className="radio" />}
+										label="No"
+									/>
+								</RadioGroup>
+							</RadioDiv>
+						</FormControl>
+					</SwitchGroup>
+					<Hr />
+					<Update>
+						<UpdateBtn>UPDATE</UpdateBtn>
+					</Update>
 				</EditProduct>
 			</Wrapper>
 		</Container>

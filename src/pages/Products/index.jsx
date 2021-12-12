@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Title, Item, New, Head } from "./Products.styles";
+import { Container, Title, Item, UpdateBtn, Head } from "./Products.styles";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -82,7 +82,7 @@ const Products = () => {
 		<Container>
 			<Head>
 				<Title>All Products</Title>
-				<New>New</New>
+				<UpdateBtn>CREATE NEW</UpdateBtn>
 			</Head>
 
 			<div style={{ height: 550, width: "100%" }}>

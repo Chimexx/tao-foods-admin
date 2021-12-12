@@ -25,20 +25,27 @@ export const Head = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
-export const New = styled.button`
-	border: none;
-	padding: 5px 10px;
-	border-radius: 10px;
-	color: #ff8400;
-	font-size: 16px;
-	background-color: #ffffff;
+
+export const UpdateBtn = styled.button`
+	padding: 5px 15px;
+	height: 35px;
+	border-radius: 6px;
+	color: #fff;
+	background-color: #ff8400;
+	border: 1px solid #ffffff;
 	box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+	font-weight: 600;
 	cursor: pointer;
+	transition: ease-in-out 0.3s;
 
 	&:hover {
+		color: #fff;
+		background-color: #ff8400;
+		border: 1px solid #ffffff;
 		box-shadow: none;
 	}
 `;
+
 export const Item = styled.div`
 	display: flex;
 	align-items: center;

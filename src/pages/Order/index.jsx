@@ -1,4 +1,3 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import {
 	DeleteOutlined,
 	Restaurant,
