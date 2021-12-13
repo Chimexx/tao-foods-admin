@@ -13,7 +13,7 @@ const WidgetLg = () => {
 				<Tr className="tablerow">
 					<Td className="name">Mike</Td>
 					<Td>20 Nov 2021</Td>
-					<Td>NGN 6,500</Td>
+					<Td>₦6,500</Td>
 					<Td>
 						<Button type="pending">Pending</Button>
 					</Td>
@@ -21,7 +21,7 @@ const WidgetLg = () => {
 				<Tr className="tablerow">
 					<Td>Mike</Td>
 					<Td>20 Nov 2021</Td>
-					<Td>NGN 6,500</Td>
+					<Td>₦6,500</Td>
 					<Td>
 						<Button type="approved">Approved</Button>
 					</Td>
@@ -29,7 +29,7 @@ const WidgetLg = () => {
 				<Tr className="tablerow">
 					<Td>Mike</Td>
 					<Td>20 Nov 2021</Td>
-					<Td>NGN 6,500</Td>
+					<Td>₦6,500</Td>
 					<Td>
 						<Button type="rejected">Rejected</Button>
 					</Td>
@@ -37,7 +37,7 @@ const WidgetLg = () => {
 				<Tr className="tablerow">
 					<Td>Mike</Td>
 					<Td>20 Nov 2021</Td>
-					<Td>NGN 6,500</Td>
+					<Td>₦6,500</Td>
 					<Td>
 						<Button type="approved">Approved</Button>
 					</Td>
@@ -45,7 +45,7 @@ const WidgetLg = () => {
 				<Tr className="tablerow">
 					<Td>Mike</Td>
 					<Td>20 Nov 2021</Td>
-					<Td>NGN 6,500</Td>
+					<Td>₦6,500</Td>
 					<Td>
 						<Button type="rejected">Rejected</Button>
 					</Td>

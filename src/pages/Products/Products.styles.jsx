@@ -17,6 +17,12 @@ export const Title = styled.span`
 	font-weight: 600;
 	color: #fff;
 	font-size: 24px;
+
+	@media screen and (max-width: 768px) {
+		padding: 5px;
+		font-weight: 400;
+		font-size: 18px;
+	}
 `;
 export const Head = styled.div`
 	height: 30px;
@@ -24,9 +30,14 @@ export const Head = styled.div`
 	background-color: #ff8400;
 	display: flex;
 	justify-content: space-between;
+
+	@media screen and (max-width: 768px) {
+		height: 30px;
+		padding: 5px 10px;
+	}
 `;
 
-export const UpdateBtn = styled.button`
+export const CreateBtn = styled.button`
 	padding: 5px 15px;
 	height: 35px;
 	border-radius: 6px;
@@ -37,6 +48,13 @@ export const UpdateBtn = styled.button`
 	font-weight: 600;
 	cursor: pointer;
 	transition: ease-in-out 0.3s;
+
+	@media screen and (max-width: 768px) {
+		height: 30px;
+		padding: 2px 5px;
+		border-radius: 4px;
+		font-weight: 500;
+	}
 
 	&:hover {
 		color: #fff;

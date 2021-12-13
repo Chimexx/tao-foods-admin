@@ -1,94 +1,95 @@
-import { Typography } from "@material-ui/core";
-import { LineStyle, Timeline, TrendingUp } from "@material-ui/icons";
-import React from "react";
-import { useStyles } from "./Sidebar.styles";
+import {
+	AddBox,
+	DoneAll,
+	HourglassEmpty,
+	LineStyle,
+	People,
+	Storefront,
+	AccountBalanceWallet,
+	Home,
+} from "@material-ui/icons";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Container, ListItem, Menu, Title, Wrapper, List, Subtitle, DashTitle } from "./Sidebar.styles";
 
 const Sidebar = () => {
-	const classes = useStyles({});
+	const [active, setActive] = useState(true);
+
+	const handleActive = (id) => {
+		const myDiv = document.getElementById(`${id}`);
+		console.log(myDiv);
+
+		myDiv.classList.add("active");
+	};
 
 	return (
-		<div className={classes.sidebar}>
-			<div className={classes.wrapper}>
-				<div className={classes.menu}>
-					<Typography variant="h6" className={classes.title}>
-						Orders
-					</Typography>
-					<ul className={classes.list}>
-						<li className={(classes.listItem, classes.listItemActive)}>
-							<LineStyle className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								All Orders
-							</Typography>
-						</li>
-
-						<li className={classes.listItem}>
-							<TrendingUp className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								Pending
-							</Typography>
-						</li>
-						<li className={classes.listItem}>
-							<Timeline className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								Fullfilled
-							</Typography>
-						</li>
-					</ul>
-				</div>
-				<div className={classes.menu}>
-					<Typography variant="h6" className={classes.title}>
-						Products
-					</Typography>
-					<ul className={classes.list}>
-						<li className={classes.listItem}>
-							<LineStyle className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								All Products
-							</Typography>
-						</li>
-
-						<li className={classes.listItem}>
-							<TrendingUp className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								New
-							</Typography>
-						</li>
-						<li className={classes.listItem}>
-							<Timeline className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								Analytics
-							</Typography>
-						</li>
-					</ul>
-				</div>
-				<div className={classes.menu}>
-					<Typography variant="h6" className={classes.title}>
-						Customers
-					</Typography>
-					<ul className={classes.list}>
-						<li className={classes.listItem}>
-							<LineStyle className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								All Customers
-							</Typography>
-						</li>
-
-						<li className={classes.listItem}>
-							<TrendingUp className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								New
-							</Typography>
-						</li>
-						<li className={classes.listItem}>
-							<Timeline className={classes.icon} />
-							<Typography variant="h6" className={classes.typography}>
-								Analytics
-							</Typography>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		<Container>
+			<Wrapper>
+				<Menu>
+					<DashTitle>Dashboard</DashTitle>
+					<List>
+						<Link to="/">
+							<ListItem>
+								<Home className="icon" />
+								<Subtitle>Home</Subtitle>
+							</ListItem>
+						</Link>
+					</List>
+				</Menu>
+				<Menu>
+					<Title>Orders</Title>
+					<List>
+						<Link to="/orders">
+							<ListItem id="allOrders" onClick={() => handleActive("allOrders")}>
+								<LineStyle className="icon" />
+								<Subtitle>All Orders</Subtitle>
+							</ListItem>
+						</Link>
+						<Link to="/orders">
+							<ListItem className="item">
+								<HourglassEmpty className="icon" />
+								<Subtitle>Pending</Subtitle>
+							</ListItem>
+						</Link>
+						<Link to="/orders">
+							<ListItem className="item">
+								<DoneAll className="icon" />
+								<Subtitle>Fullfilled</Subtitle>
+							</ListItem>
+						</Link>
+					</List>
+				</Menu>
+				<Menu>
+					<Title>Menu</Title>
+					<List>
+						<Link to="/products">
+							<ListItem>
+								<Storefront className="icon" />
+								<Subtitle>Products</Subtitle>
+							</ListItem>
+						</Link>
+						<Link to="/product/new">
+							<ListItem>
+								<AddBox className="icon" />
+								<Subtitle>Create New</Subtitle>
+							</ListItem>
+						</Link>
+						<Link to="/customers">
+							<ListItem>
+								<People className="icon" />
+								<Subtitle>Customers</Subtitle>
+							</ListItem>
+						</Link>
+						<Link to="/transactions">
+							<ListItem>
+								<AccountBalanceWallet className="icon" />
+								<Subtitle>Transactions</Subtitle>
+							</ListItem>
+						</Link>
+					</List>
+				</Menu>
+			</Wrapper>
+		</Container>
 	);
 };
 

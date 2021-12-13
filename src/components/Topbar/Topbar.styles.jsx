@@ -15,6 +15,10 @@ export const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		height: "100%",
 		padding: "0px 40px",
+
+		[theme.breakpoints.down("sm")]: {
+			padding: "0px 15px",
+		},
 	},
 	logo: {
 		width: "100px",

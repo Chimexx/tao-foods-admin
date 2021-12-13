@@ -32,6 +32,11 @@ export const Update = styled.div`
 	margin-bottom: 20px;
 	margin-top: 20px;
 	margin-left: 5px;
+
+	@media screen and (max-width: 768px) {
+		margin-bottom: 10px;
+		margin-top: 10px;
+	}
 `;
 export const SwitchGroup = styled.div`
 	padding: 5px 5px;
@@ -39,12 +44,22 @@ export const SwitchGroup = styled.div`
 	margin-top: 20px;
 	margin-left: 5px;
 
+	@media screen and (max-width: 768px) {
+		margin-bottom: 10px;
+		margin-top: 10px;
+	}
+
 	.radio {
 		color: #ff8400;
 	}
 	.radioText {
 		font-weight: 600;
 		color: #646464;
+
+		@media screen and (max-width: 768px) {
+			font-weight: 300;
+			font-size: 14px;
+		}
 	}
 	.formControl {
 		display: flex;
@@ -56,6 +71,10 @@ export const InputGroup = styled.div`
 	grid-template-columns: repeat(2, 1fr);
 	width: 100%;
 	margin-bottom: 20px;
+
+	@media screen and (max-width: 768px) {
+		margin-bottom: 10px;
+	}
 
 	.input {
 		padding: 10px 10px;

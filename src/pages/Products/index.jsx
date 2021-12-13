@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Title, Item, UpdateBtn, Head } from "./Products.styles";
+import { Container, Title, Item, CreateBtn, Head } from "./Products.styles";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -82,7 +82,9 @@ const Products = () => {
 		<Container>
 			<Head>
 				<Title>All Products</Title>
-				<UpdateBtn>CREATE NEW</UpdateBtn>
+				<Link to="/product/new">
+					<CreateBtn>CREATE NEW</CreateBtn>
+				</Link>
 			</Head>
 
 			<div style={{ height: 550, width: "100%" }}>
@@ -90,7 +92,7 @@ const Products = () => {
 					rows={rows}
 					columns={columns}
 					pageSize={10}
-					checkboxSelection
+					// checkboxSelection
 					disableSelectionOnClick
 				/>
 			</div>

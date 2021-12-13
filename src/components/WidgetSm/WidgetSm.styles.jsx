@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 	flex: 1;
-	box-shadow: 1px 1px 4px rgb(0 0 0 / 0.2);
+	box-shadow: 1px 1px 1px rgb(0 0 0 / 0.2);
 	padding: 10px;
 	margin: 8px;
 	border-radius: 10px;
@@ -19,21 +19,25 @@ export const ListItem = styled.li`
 	margin: 3px;
 	justify-content: space-between;
 	margin-bottom: 10px;
+	font-weight: 300;
+
+	@media screen and (max-width: 768px) {
+		font-size: 14px;
+	}
 `;
 export const Title = styled.h3`
 	font-size: 20px;
 	font-weight: 600;
 	margin: 0;
 	margin-bottom: 10px;
+	@media screen and (max-width: 768px) {
+		font-size: 16px;
+	}
 `;
 export const Name = styled.span`
-	font-weight: 600;
+	@media screen and (max-width: 768px) {
+		font-size: 16px;
+	}
 `;
 export const Phone = styled.span``;
 export const Amount = styled.span``;
-// export const Amount = styled.span`
-// `
-// export const Amount = styled.span`
-// `
-// export const Amount = styled.span`
-// `

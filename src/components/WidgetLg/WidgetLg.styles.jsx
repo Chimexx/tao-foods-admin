@@ -1,7 +1,7 @@
 import styled from "styled-components";
 export const Container = styled.div`
 	flex: 2;
-	box-shadow: 1px 1px 4px rgb(0 0 0 / 0.2);
+	box-shadow: 1px 1px 1px rgb(0 0 0 / 0.2);
 	padding: 10px;
 	margin: 8px;
 	border-radius: 10px;
@@ -12,6 +12,10 @@ export const Table = styled.table`
 `;
 export const Title = styled.h3`
 	margin: 5px;
+
+	@media screen and (max-width: 768px) {
+		font-size: 16px;
+	}
 `;
 export const Tr = styled.tr`
 	margin: 10px;
@@ -19,9 +23,16 @@ export const Tr = styled.tr`
 `;
 export const Th = styled.th`
 	text-align: left;
+	@media screen and (max-width: 768px) {
+		font-size: 12px;
+	}
 `;
 export const Td = styled.td`
 	font-size: 16px;
+	font-weight: 300;
+	@media screen and (max-width: 768px) {
+		font-size: 12px;
+	}
 
 	.name {
 		font-weight: 600;
@@ -35,4 +46,8 @@ export const Button = styled.button`
 		props.type === "approved" ? "#3bb077" : props.type === "pending" ? "#2a7ade" : "#d95087"};
 	background-color: ${(props) =>
 		props.type === "approved" ? "#e5faf2" : props.type === "pending" ? "#ebf1fe" : "#fff0f1"};
+
+	@media screen and (max-width: 768px) {
+		font-size: 10px;
+	}
 `;

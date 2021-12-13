@@ -6,5 +6,8 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	widgets: {
 		display: "flex",
+		[theme.breakpoints.down("sm")]: {
+			flexDirection: "column",
+		},
 	},
 }));

@@ -138,7 +138,7 @@ const Orders = () => {
 					rows={rows}
 					columns={columns}
 					pageSize={10}
-					checkboxSelection
+					// checkboxSelection
 					disableSelectionOnClick
 				/>
 			</div>

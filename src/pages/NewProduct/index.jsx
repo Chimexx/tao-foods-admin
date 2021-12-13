@@ -11,18 +11,7 @@ import {
 import { useState } from "react";
 import {
 	Container,
-	Wrapper,
-	Head,
-	ProductDetails,
-	Image,
-	Description,
-	Price,
-	Label,
-	Details,
 	Hr,
-	Item,
-	Stock,
-	Cat,
 	EditProduct,
 	RadioDiv,
 	Update,
