@@ -10,19 +10,26 @@ export const RadioDiv = styled.div`
 	margin-right: 60px;
 `;
 export const UpdateBtn = styled.button`
-	padding: 5px 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 3px 5px;
 	height: 35px;
 	border-radius: 6px;
-	color: #ff8400;
+	color: #00b600;
 	background-color: #fff;
-	border: 1px solid #ff8400;
+	border: 1px solid #00b600;
 	font-weight: 600;
 	cursor: pointer;
 	transition: ease-in-out 0.3s;
 
+	.check {
+		margin-right: 5px;
+	}
+
 	&:hover {
 		color: #fff;
-		background-color: #ff8400;
+		background-color: #00b600;
 		box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
 	}
 `;

@@ -8,6 +8,7 @@ import {
 	RadioGroup,
 	TextField,
 } from "@material-ui/core";
+import { CheckCircle } from "@material-ui/icons";
 import { useState } from "react";
 import {
 	Container,
@@ -155,7 +156,9 @@ const NewProduct = () => {
 				</SwitchGroup>
 				<Hr />
 				<Update>
-					<UpdateBtn>SAVE</UpdateBtn>
+					<UpdateBtn>
+						<CheckCircle className="check" /> SUBMIT
+					</UpdateBtn>
 				</Update>
 			</EditProduct>
 		</Container>

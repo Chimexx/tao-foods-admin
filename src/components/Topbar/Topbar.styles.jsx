@@ -29,6 +29,13 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	user: {
 		marginRight: "10px",
+		fontWeight: 500,
+	},
+	account: {
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginRight: "10px",
 	},
 
 	icon: {

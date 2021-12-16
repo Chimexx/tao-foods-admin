@@ -25,6 +25,7 @@ export const useStyles = makeStyles((theme) => ({
 		fontSize: 20,
 
 		[theme.breakpoints.down("sm")]: {
+			fontSize: 16,
 			fontWeight: "300",
 		},
 	},
@@ -39,7 +40,7 @@ export const useStyles = makeStyles((theme) => ({
 
 		[theme.breakpoints.down("sm")]: {
 			fontSize: 24,
-			fontWeight: "500",
+			fontWeight: "600",
 		},
 	},
 	rate: {
