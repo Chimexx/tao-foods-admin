@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Title, Item, CreateBtn, Head } from "./Products.styles";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { productsFetch } from "../../redux/apiRequests";
 
 const columns = [
-	{ field: "id", headerName: "ID", width: 100 },
+	{ field: "_id", headerName: "ID", width: 100, hide: true },
 
 	{
 		field: "item",
@@ -15,8 +17,8 @@ const columns = [
 		renderCell: (params) => {
 			return (
 				<Item>
-					<img src={params.row.image} alt="" />
-					<span>{params.row.item}</span>
+					<img src={params.row.img} alt="" />
+					<span>{params.row.title}</span>
 				</Item>
 			);
 		},
@@ -24,7 +26,7 @@ const columns = [
 	{
 		field: "desc",
 		headerName: "Description",
-		width: 120,
+		width: 250,
 		editable: false,
 	},
 	{
@@ -39,12 +41,24 @@ const columns = [
 		headerName: "In Stock",
 		width: 120,
 		editable: false,
+		renderCell: (params) => {
+			return <span>{params.row.inStock ? "Yes" : "No"}</span>;
+		},
 	},
 	{
 		field: "cat",
 		headerName: "Categories",
 		width: 150,
 		editable: false,
+		renderCell: (params) => {
+			return (
+				<Item>
+					{params.row.category.map((cat, index) => {
+						return <span key={index}>{cat}</span>;
+					})}
+				</Item>
+			);
+		},
 	},
 	{
 		field: "action",
@@ -54,7 +68,7 @@ const columns = [
 		renderCell: (params) => {
 			return (
 				<>
-					<Link to={"/product/" + params.row.id}>
+					<Link to={"/product/" + params.row._id}>
 						<Button size="small" variant="outlined" className="button">
 							Edit
 						</Button>
@@ -65,31 +79,28 @@ const columns = [
 	},
 ];
 
-const rows = [
-	{
-		id: 1,
-		item: "Jollof Rice",
-		image: "https://elleyajoku.com/wp-content/uploads/2017/10/jollof-rice-cooking.jpg",
-		desc: "Jollof rice",
-		price: 400,
-		inStock: true,
-		cat: "Rice",
-	},
-];
-
 const Products = () => {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		productsFetch(dispatch);
+	}, [dispatch]);
+
+	const { products } = useSelector((state) => state.products);
+
 	return (
 		<Container>
 			<Head>
 				<Title>All Products</Title>
-				<Link to="/product/new">
+				<Link to="/newproduct">
 					<CreateBtn>CREATE NEW</CreateBtn>
 				</Link>
 			</Head>
 
 			<div style={{ height: 550, width: "100%" }}>
 				<DataGrid
-					rows={rows}
+					rows={products}
+					getRowId={(row) => row._id}
 					columns={columns}
 					pageSize={10}
 					// checkboxSelection

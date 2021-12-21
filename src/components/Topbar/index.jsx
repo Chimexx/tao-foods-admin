@@ -4,7 +4,8 @@ import logo from "../../images/tao.svg";
 import { Badge, Button } from "@material-ui/core";
 import { NotificationsNone } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../redux/apiRequests";
+import { logout, ordersFetch } from "../../redux/apiRequests";
+import { useEffect } from "react";
 
 const Topbar = () => {
 	const classes = useStyles();
@@ -16,6 +17,8 @@ const Topbar = () => {
 		logout(dispatch);
 	};
 
+	const orders = useSelector((state) => state.orders.orders.filter((items) => items.status === "pending"));
+
 	return (
 		<div className={classes.topbar}>
 			<div className={classes.wrapper}>
@@ -26,13 +29,13 @@ const Topbar = () => {
 					{currentUser && (
 						<div className={classes.account}>
 							<div className={classes.user}>{currentUser.username}</div>
-							<Button variant="outlined" size="small" onClick={handleLogout}>
+							<Button size="small" className={classes.button} onClick={handleLogout}>
 								Logout
 							</Button>
 						</div>
 					)}
 					<div className="icons">
-						<Badge badgeContent={4} color="error">
+						<Badge badgeContent={orders.length} color="error">
 							<NotificationsNone className={classes.icon} />
 						</Badge>
 					</div>

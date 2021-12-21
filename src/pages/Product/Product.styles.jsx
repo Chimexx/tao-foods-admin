@@ -27,9 +27,22 @@ export const Details = styled.div`
 	padding: 10px;
 `;
 export const Label = styled.span`
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-left: 3px solid #ff8400;
+	background-color: #fafafa;
+	padding: 3px 10px;
 	font-size: 18px;
-	font-weight: 600;
-	color: #252525;
+	font-weight: 500;
+	margin: 0;
+	color: #474747;
+
+	@media screen and (max-width: 768px) {
+		padding: 2px 5px;
+		font-size: 16px;
+		font-weight: 400;
+		margin-bottom: 5px;
+	}
 `;
 export const Cat = styled.span`
 	display: flex;
@@ -47,8 +60,8 @@ export const Stock = styled.span`
 	font-weight: 400;
 	padding: 3px 10px;
 	border-radius: 5px;
-	color: ${(props) => (props.value === "true" ? "#0be21d" : "#ff0101")};
-	background-color: ${(props) => (props.value === "true" ? "#e0ffe3" : "#ffe6e6")};
+	color: ${(props) => (props.value === true ? "#0be21d" : "#ff0101")};
+	background-color: ${(props) => (props.value === true ? "#e0ffe3" : "#ffe6e6")};
 `;
 
 export const Price = styled.span`
@@ -71,27 +84,62 @@ export const ProductDetails = styled.div`
 	margin: 3px;
 `;
 export const Update = styled.div`
+	display: flex;
 	padding: 5px 5px;
 	margin-bottom: 20px;
 	margin-top: 20px;
 	margin-left: 5px;
+	align-items: center;
+
+	@media screen and (max-width: 768px) {
+		justify-content: space-between;
+	}
 `;
 export const SwitchGroup = styled.div`
 	padding: 5px 5px;
-	margin-bottom: 20px;
-	margin-top: 20px;
+	margin: 20px 0px;
+
 	margin-left: 5px;
 
+	@media screen and (max-width: 768px) {
+		margin: 10px 0px;
+	}
+
 	.radio {
-		color: #ff8400;
+		color: #818181;
+		&:checked {
+			color: #818181;
+		}
+		&:hover {
+			color: #575757;
+		}
 	}
 	.radioText {
-		font-weight: 600;
-		color: #646464;
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		border-left: 3px solid #ff8400;
+		background-color: #fafafa;
+		padding: 3px 10px;
+		font-size: 18px;
+		font-weight: 500;
+		margin: 0;
+		margin-bottom: 10px;
+		color: #474747;
+
+		@media screen and (max-width: 768px) {
+			padding: 2px 5px;
+			font-size: 14px;
+			font-weight: 300;
+			margin-bottom: 5px;
+		}
 	}
 	.formControl {
 		display: flex;
 		flex-direction: row;
+
+		@media screen and (max-width: 768px) {
+			justify-content: space-between;
+		}
 	}
 `;
 export const InputGroup = styled.div`
@@ -126,21 +174,71 @@ export const Hr = styled.hr`
 `;
 export const RadioDiv = styled.div`
 	margin-right: 60px;
+
+	@media screen and (max-width: 768px) {
+		margin-right: 0px;
+	}
 `;
-export const UpdateBtn = styled.button`
-	padding: 5px 15px;
-	height: 35px;
-	border-radius: 6px;
-	color: #ff8400;
-	background-color: #fff;
-	border: 1px solid #ff8400;
+
+export const ActionBtn = styled.button`
+	display: flex;
+	height: 40px;
+	padding: 3px 0px;
+	padding-left: 4px;
+	padding-right: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border: none;
+	font-size: 14px;
 	font-weight: 600;
+	justify-content: flex-start;
+	align-items: center;
+	margin-right: 10px;
+	box-shadow: ${(props) => (props.disabled ? "none" : "0 1px 3px rgb(0 0 0 / 0.2)")};
 	cursor: pointer;
-	transition: ease-in-out 0.3s;
+	color: ${(props) => (props.status === "delete" ? "#fd2a2a" : "#06af00")};
+	border-left: 3px solid ${(props) => (props.status === "delete" ? "#fd2a2a" : "#06af00")};
+	background-color: ${(props) => (props.status === "approve" ? "#e5ffe4" : "#ffe0e0")};
+	transition: all ease-in-out 0.3s;
+
+	&:disabled {
+		cursor: wait;
+	}
 
 	&:hover {
-		color: #fff;
-		background-color: #ff8400;
-		box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+		box-shadow: none;
+	}
+
+	.icon {
+		background-color: #fff;
+		padding: 4px;
+		height: 20px;
+		width: 20px;
+		border-radius: 50%;
+		margin-left: 4px;
+
+		@media screen and (max-width: 768px) {
+			padding: 2px;
+		}
+	}
+	.spinner {
+		padding: 4px;
+		margin-left: 4px;
+
+		@media screen and (max-width: 768px) {
+			padding: 2px;
+		}
+	}
+	.text {
+		margin-left: 5px;
+	}
+
+	@media screen and (max-width: 768px) {
+		height: 30px;
+		padding: 2px 0px;
+		padding-right: 5px;
+		font-size: 12px;
+		font-weight: 300;
+		justify-content: space-between;
 	}
 `;

@@ -6,7 +6,7 @@ import {
 	People,
 	Storefront,
 	AccountBalanceWallet,
-	Home,
+	ListAlt,
 } from "@material-ui/icons";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -30,7 +30,7 @@ const Sidebar = () => {
 					<List>
 						<Link to="/">
 							<ListItem>
-								<Home className="icon" />
+								<Storefront className="icon" />
 								<Subtitle>Home</Subtitle>
 							</ListItem>
 						</Link>
@@ -45,16 +45,16 @@ const Sidebar = () => {
 								<Subtitle>All Orders</Subtitle>
 							</ListItem>
 						</Link>
-						<Link to="/orders">
+						<Link to="/pending-orders">
 							<ListItem className="item">
 								<HourglassEmpty className="icon" />
 								<Subtitle>Pending</Subtitle>
 							</ListItem>
 						</Link>
-						<Link to="/orders">
+						<Link to="/delivered-orders">
 							<ListItem className="item">
 								<DoneAll className="icon" />
-								<Subtitle>Fullfilled</Subtitle>
+								<Subtitle>Delivered</Subtitle>
 							</ListItem>
 						</Link>
 					</List>
@@ -64,11 +64,11 @@ const Sidebar = () => {
 					<List>
 						<Link to="/products">
 							<ListItem>
-								<Storefront className="icon" />
+								<ListAlt className="icon" />
 								<Subtitle>Products</Subtitle>
 							</ListItem>
 						</Link>
-						<Link to="/product/new">
+						<Link to="/newproduct">
 							<ListItem>
 								<AddBox className="icon" />
 								<Subtitle>Create New</Subtitle>

@@ -7,9 +7,9 @@ export const Hr = styled.hr`
 	opacity: 0.3;
 `;
 export const RadioDiv = styled.div`
-	margin-right: 60px;
+	margin-right: 30px;
 `;
-export const UpdateBtn = styled.button`
+export const PostBtn = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -20,7 +20,7 @@ export const UpdateBtn = styled.button`
 	background-color: #fff;
 	border: 1px solid #00b600;
 	font-weight: 600;
-	cursor: pointer;
+	cursor: ${(props) => (props.disabled ? "none" : "pointer")};
 	transition: ease-in-out 0.3s;
 
 	.check {
@@ -29,7 +29,7 @@ export const UpdateBtn = styled.button`
 
 	&:hover {
 		color: #fff;
-		background-color: #00b600;
+		background-color: ${(props) => (props.disabled ? "none" : "#00b600")};
 		box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
 	}
 `;
@@ -47,25 +47,29 @@ export const Update = styled.div`
 `;
 export const SwitchGroup = styled.div`
 	padding: 5px 5px;
-	margin-bottom: 20px;
-	margin-top: 20px;
+	margin: 20px 0px;
+
 	margin-left: 5px;
 
 	@media screen and (max-width: 768px) {
-		margin-bottom: 10px;
-		margin-top: 10px;
+		margin: 10px 0px;
 	}
 
 	.radio {
-		color: #ff8400;
+		&:hover {
+			color: #141414;
+		}
 	}
 	.radioText {
 		font-weight: 600;
+		font-size: 18px;
 		color: #646464;
+		margin: 0px;
+		padding: 0px;
 
 		@media screen and (max-width: 768px) {
-			font-weight: 300;
-			font-size: 14px;
+			font-weight: 500;
+			font-size: 16px;
 		}
 	}
 	.formControl {
@@ -81,25 +85,21 @@ export const InputGroup = styled.div`
 
 	@media screen and (max-width: 768px) {
 		margin-bottom: 10px;
+		display: block;
+		width: 100%;
 	}
 
 	.input {
-		padding: 10px 10px;
-	}
+		margin: 10px;
 
-	@media screen and (max-width: 768px) {
-		display: block;
+		@media screen and (max-width: 768px) {
+			width: 100%;
+		}
 	}
 `;
-export const EditProduct = styled.div`
+export const Wrapper = styled.div`
 	flex: 2;
 	background-color: #ffffff;
 	border-radius: 5px;
-	margin: 3px;
-	padding: 10px;
-`;
-export const Image = styled.img`
-	width: 100%;
-	object-fit: cover;
-	height: 200px;
+	margin: 1px;
 `;

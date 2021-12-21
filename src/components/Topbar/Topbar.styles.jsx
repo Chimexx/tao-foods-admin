@@ -41,4 +41,17 @@ export const useStyles = makeStyles((theme) => ({
 	icon: {
 		color: "#555555",
 	},
+	button: {
+		display: "flex",
+		height: "25px",
+		padding: "2px 5px",
+		borderTopRightRadius: "10px",
+		borderBottomRightRadius: "10px",
+		border: "none",
+		fontSize: "14px",
+		justifyContent: "flex-start",
+		color: "#ff8400",
+		borderLeft: "3px solid #ff8400",
+		backgroundColor: "#fff0e0",
+	},
 }));

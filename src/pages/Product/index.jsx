@@ -1,5 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { ref, deleteObject, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../../firebase";
+
 import {
 	Container,
 	Wrapper,
@@ -19,18 +22,16 @@ import {
 	Update,
 	InputGroup,
 	SwitchGroup,
-	UpdateBtn,
+	ActionBtn,
 } from "./Product.styles";
-import {
-	Button,
-	FormControl,
-	FormControlLabel,
-	FormLabel,
-	Radio,
-	RadioGroup,
-	TextField,
-} from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Button, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { deleteProduct, updateProduct } from "../../redux/apiRequests";
+import { CheckCircleOutlined, DeleteOutlined } from "@material-ui/icons";
+import { toast } from "react-toastify";
+import { ClassicSpinner } from "react-spinners-kit";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -38,6 +39,12 @@ const useStyles = makeStyles((theme) => ({
 			margin: theme.spacing(1),
 			padding: "5px 5px",
 			height: "50px",
+		},
+
+		[theme.breakpoints.down("sm")]: {
+			width: "100%",
+			padding: 0,
+			margin: theme.spacing(0),
 		},
 	},
 	input: {
@@ -47,14 +54,21 @@ const useStyles = makeStyles((theme) => ({
 
 const Product = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
+	const location = useLocation();
+	const history = useHistory();
 
-	const [requireSauce, setRequireStock] = React.useState("false");
-	const [inStock, setInStock] = React.useState("true");
+	const id = location.pathname.split("/")[2];
+	const product = useSelector((state) => state.products.products.find((item) => item._id === id));
+
+	const [requireSauce, setRequireStock] = React.useState("");
+	const [inStock, setInStock] = React.useState("");
 	const [title, setTitle] = React.useState("");
 	const [price, setPrice] = React.useState("");
-	const [description, setDescription] = React.useState([]);
-	const [categories, setCategories] = React.useState([]);
-	const [image, setImage] = React.useState();
+	const [desc, setDesc] = React.useState("");
+	const [category, setCategory] = React.useState(undefined);
+	const [file, setFile] = React.useState(null);
+	const [loading, setLoading] = React.useState(false);
 
 	const handleInStock = (event) => {
 		setInStock(event.target.value);
@@ -63,79 +77,180 @@ const Product = () => {
 		setRequireStock(event.target.value);
 	};
 
+	const handleDelete = () => {
+		setLoading(true);
+		deleteProduct(id, dispatch);
+		toast.warn("Item deleted!", {
+			position: toast.POSITION.BOTTOM_RIGHT,
+			autoClose: 3000,
+		});
+		setLoading(false);
+		history.push("/products");
+	};
+
+	const handleUpdate = async () => {
+		setLoading(true);
+		// I need to delete this file first so as to replace it with a new one
+		// Create a reference to the file to delete
+		if (file?.name) {
+			//If there is a file
+			const imageRef = ref(storage, `images/${product.imgName}`);
+			// Delete the file
+
+			await deleteObject(imageRef)
+				.then(() => {})
+				.catch((error) => {
+					toast.error("Image doesn't exist", {
+						position: toast.POSITION.BOTTOM_RIGHT,
+						autoClose: 3000,
+					});
+					setLoading(false);
+				});
+			// File deleted successfully
+			const storageRef = ref(storage, "images/" + file.name);
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {},
+				(error) => {
+					toast.success(`There was problem, try again`, {
+						position: toast.POSITION.BOTTOM_RIGHT,
+						autoClose: 3000,
+					});
+					console.log(error);
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+						updateProduct(
+							id,
+							{
+								title: title ? title : product.title,
+								price: price ? price : product.price,
+								category: category ? category : product.category,
+								desc: desc ? desc : product.desc,
+								inStock: inStock ? inStock : product.inStock,
+								requireSauce: requireSauce ? requireSauce : product.requireSauce,
+								img: downloadURL,
+								imgName: file.name,
+							},
+							dispatch
+						);
+						toast.success(`${title ? title : product.title} was update!`, {
+							position: toast.POSITION.BOTTOM_RIGHT,
+							autoClose: 3000,
+						});
+						setLoading(false);
+					});
+				}
+			);
+		} else {
+			//if there is no file
+			updateProduct(
+				id,
+				{
+					title: title ? title : product.title,
+					price: price ? price : product.price,
+					category: category ? category : product.category,
+					desc: desc ? desc : product.desc,
+					inStock: inStock ? inStock : product.inStock,
+					requireSauce: requireSauce ? requireSauce : product.requireSauce,
+					img: product.img,
+					imgName: product.imgName,
+				},
+				dispatch
+			);
+			console.log(title, price, desc, inStock, requireSauce);
+
+			toast.success(`${title ? title : product.title} was updated!`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				autoClose: 3000,
+			});
+			setLoading(false);
+		}
+	};
+
+	if (!product) {
+		return <Container>There was an error</Container>;
+	}
+
 	return (
 		<Container>
 			<Head>Edit Product</Head>
 			<Wrapper>
 				<ProductDetails>
-					<Image src="https://elleyajoku.com/wp-content/uploads/2017/10/jollof-rice-cooking.jpg" />
+					<Image src={product.img} />
 					<Details>
 						<Item>
-							<Label>Jollof Rice</Label>
-							<Description>Description</Description>
+							<Label>{product.title}</Label>
+							<Description>{product.desc}</Description>
 						</Item>
-						<Price>NGN 2000</Price>
+						<Price>₦{product.price} </Price>
 					</Details>
 					<Hr />
 					<Cat>
 						<Label>Category</Label>
-						<em>
-							<Description>Rice, rice</Description>
-						</em>
+						{product.category?.map((cat, index) => (
+							<em>
+								<Description key={index}>{cat}</Description>
+							</em>
+						))}
 					</Cat>
 					<Hr />
 					<Cat>
 						<Label>In Stock</Label>
 						<em>
-							<Stock value="true">Yes</Stock>
+							<Stock value={product.inStock}>{product.inStock === true ? "Yes" : "No"}</Stock>
 						</em>
 					</Cat>
 					<Hr />
 					<Cat>
 						<Label>Require Sauce</Label>
 						<em>
-							<Stock value="false">No</Stock>
+							<Stock value={product.requireSauce}>
+								{product.requireSauce === true ? "Yes" : "No"}
+							</Stock>
 						</em>
 					</Cat>
 				</ProductDetails>
 				<EditProduct>
 					<InputGroup>
 						<TextField
-							// className="input"
 							label="Item Name"
 							id="filled-size-small"
-							defaultValue={title}
 							variant="filled"
 							size="small"
+							defaultValue={product.title}
 							className={classes.root}
+							onChange={(e) => setTitle(e.target.value)}
 						/>
 						<TextField
-							// className="input"
 							label="Item Description"
 							id="filled-size-small"
-							defaultValue={description}
+							defaultValue={product.desc}
 							variant="filled"
 							size="small"
 							className={classes.root}
+							onChange={(e) => setDesc(e.target.value)}
 						/>
 						<TextField
-							// className="input"
 							label="Item Price"
 							id="filled-size-small"
 							type="number"
-							defaultValue=""
+							defaultValue={product.price}
 							variant="filled"
 							size="small"
+							width="100%"
 							className={classes.root}
+							onChange={(e) => setPrice(e.target.value)}
 						/>
 						<TextField
-							// className="input"
-							label="Item Categories"
+							label="Item Category"
 							id="filled-size-small"
-							defaultValue=""
+							defaultValue={product.category}
 							variant="filled"
 							size="small"
 							className={classes.root}
+							onChange={(e) => setCategory(e.target.value.split(","))}
 						/>
 						<div className={classes.root} style={{ marginTop: "10px", padding: 0 }}>
 							<input
@@ -143,6 +258,7 @@ const Product = () => {
 								className={classes.input}
 								id="contained-button-file"
 								type="file"
+								onChange={(e) => setFile(e.target.files[0])}
 							/>
 							<label htmlFor="contained-button-file" style={{ margin: "5px" }}>
 								<Button variant="contained" color="default" component="span">
@@ -155,13 +271,11 @@ const Product = () => {
 					<SwitchGroup>
 						<FormControl component="fieldset" className="formControl">
 							<RadioDiv>
-								<FormLabel component="legend" className="radioText">
-									In Stock
-								</FormLabel>
+								<span className="radioText">In Stock</span>
 								<RadioGroup
 									aria-label="instock"
 									name="instock"
-									value={inStock}
+									defaultValue={`${product.inStock}`}
 									onChange={handleInStock}
 								>
 									<FormControlLabel
@@ -177,13 +291,11 @@ const Product = () => {
 								</RadioGroup>
 							</RadioDiv>
 							<RadioDiv>
-								<FormLabel component="legend" className="radioText">
-									Require Sauce
-								</FormLabel>
+								<span className="radioText">Require Sauce</span>
 								<RadioGroup
 									aria-label="reqSauce"
 									name="reqSauce"
-									value={requireSauce}
+									defaultValue={`${product.requireSauce}`}
 									onChange={handleReqSauce}
 								>
 									<FormControlLabel
@@ -202,7 +314,20 @@ const Product = () => {
 					</SwitchGroup>
 					<Hr />
 					<Update>
-						<UpdateBtn>UPDATE</UpdateBtn>
+						<ActionBtn status="approve" disabled={loading} onClick={handleUpdate}>
+							{loading ? (
+								<div className="spinner">
+									<ClassicSpinner size={15} color="#06af00" />
+								</div>
+							) : (
+								<CheckCircleOutlined className="icon" />
+							)}
+							<span className="text">Update</span>
+						</ActionBtn>
+						<ActionBtn status="delete" disabled={loading} onClick={handleDelete}>
+							<DeleteOutlined className="icon" />
+							<span className="text">Delete Product</span>
+						</ActionBtn>
 					</Update>
 				</EditProduct>
 			</Wrapper>

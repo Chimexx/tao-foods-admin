@@ -1,6 +1,33 @@
 import { loginStart, loginSuccess, loginFailure, userLogout } from "./userSlice";
-import { orderFetchStart, orderFetchSuccess, orderFetchFailure } from "./orderSlice";
-import { productFetchStart, productFetchSuccess, productFetchFailure } from "./productSlice";
+import {
+	ordersFetchStart,
+	ordersFetchSuccess,
+	ordersFetchFailure,
+	updateOrderStart,
+	updateOrderFailure,
+	updateOrderSuccess,
+	deleteOrderStart,
+	deleteOrderSuccess,
+	deleteOrderFailure,
+} from "./orderSlice";
+import {
+	productsFetchStart,
+	productsFetchSuccess,
+	productsFetchFailure,
+	createProductStart,
+	createProductSuccess,
+	createProductFailure,
+	updateProductStart,
+	updateProductSuccess,
+	updateProductFailure,
+	deleteProductStart,
+	deleteProductSuccess,
+	deleteProductFailure,
+} from "./productSlice";
+
+const TOKEN = localStorage.getItem("persist:root")
+	? JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser?.accessToken
+	: "";
 
 export const login = async (dispatch, data) => {
 	dispatch(loginStart());
@@ -27,54 +54,122 @@ export const logout = async (dispatch) => {
 };
 
 export const ordersFetch = async (dispatch) => {
-	dispatch(orderFetchStart());
+	dispatch(ordersFetchStart());
 	try {
 		const endpoint = "https://tao-foods.herokuapp.com/api/orders";
 
-		const res = await (await fetch(endpoint))?.json();
-		dispatch(orderFetchSuccess(res));
+		const res = await (
+			await fetch(endpoint, {
+				method: "GET",
+				headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
+			})
+		)?.json();
+		dispatch(ordersFetchSuccess(res));
 	} catch (error) {
 		console.log(error);
-		dispatch(orderFetchFailure());
+		dispatch(ordersFetchFailure());
+	}
+};
+
+export const updateOrder = async (id, data, dispatch) => {
+	dispatch(updateOrderStart());
+
+	try {
+		const endpoint = `https://tao-foods.herokuapp.com/api/orders/${id}`;
+
+		const res = await (
+			await fetch(endpoint, {
+				method: "PUT",
+				body: JSON.stringify(data),
+				headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
+			})
+		)?.json();
+		dispatch(updateOrderSuccess({ id, res }));
+	} catch (error) {
+		dispatch(updateOrderFailure());
+		console.log(error);
+	}
+};
+export const deleteOrder = async (id, dispatch) => {
+	dispatch(deleteOrderStart());
+
+	try {
+		const endpoint = `https://tao-foods.herokuapp.com/api/orders/${id}`;
+
+		await fetch(endpoint, {
+			method: "DELETE",
+			headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
+		});
+		dispatch(deleteOrderSuccess({ id }));
+	} catch (error) {
+		dispatch(deleteOrderFailure());
+		console.log(error);
 	}
 };
 
 export const productsFetch = async (dispatch) => {
-	dispatch(productFetchStart());
+	dispatch(productsFetchStart());
 	try {
 		const endpoint = "https://tao-foods.herokuapp.com/api/dishes";
 
 		const res = await (await fetch(endpoint))?.json();
-		dispatch(productFetchSuccess(res));
+		dispatch(productsFetchSuccess(res));
 	} catch (error) {
 		console.log(error);
-		dispatch(productFetchFailure());
+		dispatch(productsFetchFailure());
 	}
 };
 
-// export const itemFetch = createAsyncThunk("items/itemFetch", async (id) => {
-// 	try {
-// 		const endpoint = `https://tao-foods.herokuapp.com/api/dishes/find/${id}`;
-// 		return await (await fetch(endpoint))?.json();
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// });
+export const createProduct = async (dispatch, data) => {
+	dispatch(createProductStart());
+	try {
+		const endpoint = "https://tao-foods.herokuapp.com/api/dishes/new";
 
-// export const meatFetch = createAsyncThunk("items/meatFetch", async () => {
-// 	try {
-// 		const endpoint = "https://tao-foods.herokuapp.com/api/meat";
-// 		return await (await fetch(endpoint))?.json();
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// });
+		const res = await (
+			await fetch(endpoint, {
+				method: "POST",
+				body: JSON.stringify(data),
+				headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
+			})
+		)?.json();
+		dispatch(createProductSuccess(res));
+	} catch (error) {
+		dispatch(createProductFailure());
+		console.log(error);
+	}
+};
+export const updateProduct = async (id, data, dispatch) => {
+	dispatch(updateProductStart());
 
-// export const sauceFetch = createAsyncThunk("items/sauceFetch", async () => {
-// 	try {
-// 		const endpoint = "https://tao-foods.herokuapp.com/api/sauce";
-// 		return await (await fetch(endpoint))?.json();
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// });
+	try {
+		const endpoint = `https://tao-foods.herokuapp.com/api/dishes/update/${id}`;
+
+		const res = await (
+			await fetch(endpoint, {
+				method: "PUT",
+				body: JSON.stringify(data),
+				headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
+			})
+		)?.json();
+		dispatch(updateProductSuccess({ id, res }));
+	} catch (error) {
+		dispatch(updateProductFailure());
+		console.log(error);
+	}
+};
+export const deleteProduct = async (id, dispatch) => {
+	dispatch(deleteProductStart());
+
+	try {
+		const endpoint = `https://tao-foods.herokuapp.com/api/dishes/${id}`;
+
+		await fetch(endpoint, {
+			method: "DELETE",
+			headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
+		});
+		dispatch(deleteProductSuccess({ id }));
+	} catch (error) {
+		dispatch(deleteProductFailure());
+		console.log(error);
+	}
+};

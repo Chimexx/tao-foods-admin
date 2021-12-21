@@ -2,7 +2,6 @@ import {
 	Button,
 	FormControl,
 	FormControlLabel,
-	FormLabel,
 	makeStyles,
 	Radio,
 	RadioGroup,
@@ -13,13 +12,19 @@ import { useState } from "react";
 import {
 	Container,
 	Hr,
-	EditProduct,
+	Wrapper,
 	RadioDiv,
 	Update,
 	InputGroup,
 	SwitchGroup,
-	UpdateBtn,
+	PostBtn,
 } from "./NewProduct.styles";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../firebase";
+import { useDispatch } from "react-redux";
+import { createProduct } from "../../redux/apiRequests";
+import { toast } from "react-toastify";
+import { PulseSpinner } from "react-spinners-kit";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -36,60 +41,107 @@ const useStyles = makeStyles((theme) => ({
 
 const NewProduct = () => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 
-	const [requireSauce, setRequireStock] = useState("false");
+	const [requireSauce, setRequireSauce] = useState("false");
 	const [inStock, setInStock] = useState("true");
 	const [title, setTitle] = useState("");
 	const [price, setPrice] = useState("");
-	const [description, setDescription] = useState([]);
-	const [categories, setCategories] = useState([]);
-	const [image, setImage] = useState();
+	const [desc, setDesc] = useState("");
+	const [category, setCategory] = useState([]);
+	const [file, setFile] = useState(null);
+	const [loading, setLoading] = useState(false);
 
 	const handleInStock = (event) => {
 		setInStock(event.target.value);
 	};
 	const handleReqSauce = (event) => {
-		setRequireStock(event.target.value);
+		setRequireSauce(event.target.value);
+	};
+
+	const handleSubmit = () => {
+		setLoading(true);
+		const storageRef = ref(storage, "images/" + file.name);
+		const uploadTask = uploadBytesResumable(storageRef, file);
+		uploadTask.on(
+			"state_changed",
+			(snapshot) => {},
+			(error) => {
+				toast.error(`There was a problem, try again`, {
+					position: toast.POSITION.BOTTOM_RIGHT,
+					autoClose: 3000,
+				});
+				console.log(error);
+				setLoading(false);
+			},
+			() => {
+				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+					createProduct(dispatch, {
+						title,
+						price,
+						desc,
+						inStock,
+						requireSauce,
+						category,
+						img: downloadURL,
+						imgName: file.name,
+					});
+					setTitle("");
+					setPrice("");
+					setDesc("");
+					setInStock("");
+					setRequireSauce("");
+					setCategory("");
+					setFile(null);
+
+					toast.success(`${title} was added!`, {
+						position: toast.POSITION.BOTTOM_RIGHT,
+						autoClose: 3000,
+					});
+					setLoading(false);
+				});
+			}
+		);
 	};
 
 	return (
 		<Container>
-			<EditProduct>
+			<Wrapper>
 				<InputGroup>
 					<TextField
-						// className="input"
 						label="Item Name"
 						id="filled-size-small"
 						variant="filled"
 						size="small"
-						className={classes.root}
+						className="input"
+						onChange={(e) => setTitle(e.target.value)}
 					/>
 					<TextField
-						// className="input"
 						label="Item Description"
 						id="filled-size-small"
 						variant="filled"
 						size="small"
-						className={classes.root}
+						className="input"
+						onChange={(e) => setDesc(e.target.value)}
 					/>
 					<TextField
-						// className="input"
 						label="Item Price"
 						id="filled-size-small"
 						type="number"
 						defaultValue=""
 						variant="filled"
 						size="small"
-						className={classes.root}
+						className="input"
+						onChange={(e) => setPrice(e.target.value)}
 					/>
 					<TextField
-						// className="input"
 						label="Item Categories"
 						id="filled-size-small"
 						defaultValue=""
 						variant="filled"
 						size="small"
-						className={classes.root}
+						className="input"
+						onChange={(e) => setCategory(e.target.value.split(","))}
 					/>
 					<div style={{ margin: "10px" }}>
 						<input
@@ -97,10 +149,11 @@ const NewProduct = () => {
 							className={classes.input}
 							id="contained-button-file"
 							type="file"
+							onChange={(e) => setFile(e.target.files[0])}
 						/>
 						<label htmlFor="contained-button-file">
 							<Button variant="contained" color="default" component="span">
-								Upload Image
+								Select Image
 							</Button>
 						</label>
 					</div>
@@ -109,19 +162,18 @@ const NewProduct = () => {
 				<SwitchGroup>
 					<FormControl component="fieldset" className="formControl">
 						<RadioDiv>
-							<FormLabel component="legend" className="radioText">
-								In Stock
-							</FormLabel>
+							<span className="radioText">In Stock</span>
 							<RadioGroup
 								aria-label="instock"
 								name="instock"
-								value={inStock}
+								defaultValue="true"
 								onChange={handleInStock}
 							>
 								<FormControlLabel
 									value="true"
 									control={<Radio className="radio" />}
 									label="Yes"
+									color="default"
 								/>
 								<FormControlLabel
 									value="false"
@@ -131,13 +183,11 @@ const NewProduct = () => {
 							</RadioGroup>
 						</RadioDiv>
 						<RadioDiv>
-							<FormLabel component="legend" className="radioText">
-								Require Sauce
-							</FormLabel>
+							<span className="radioText">Require Sauce</span>
 							<RadioGroup
 								aria-label="reqSauce"
 								name="reqSauce"
-								value={requireSauce}
+								defaultValue="false"
 								onChange={handleReqSauce}
 							>
 								<FormControlLabel
@@ -156,11 +206,12 @@ const NewProduct = () => {
 				</SwitchGroup>
 				<Hr />
 				<Update>
-					<UpdateBtn>
-						<CheckCircle className="check" /> SUBMIT
-					</UpdateBtn>
+					<PostBtn onClick={handleSubmit}>
+						{loading ? <PulseSpinner size={25} color="#00b600" /> : <CheckCircle />}
+						SUBMIT
+					</PostBtn>
 				</Update>
-			</EditProduct>
+			</Wrapper>
 		</Container>
 	);
 };

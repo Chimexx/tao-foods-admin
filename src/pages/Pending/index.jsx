@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
-import { Container, Title, Span } from "./Orders.styles";
+import React from "react";
+import { Container, Title } from "./Pending.styles";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { ordersFetch } from "../../redux/apiRequests";
-import Alert from "../../components/Alert";
+import { useSelector } from "react-redux";
 
 const columns = [
 	{ field: "_id", headerName: "ID", width: 100, hide: true },
@@ -57,7 +55,7 @@ const columns = [
 		width: 110,
 		editable: false,
 		renderCell: (params) => {
-			return <Span value={params.row.status}>{params.row.status}</Span>;
+			return <span className="status">{params.row.status}</span>;
 		},
 	},
 	{
@@ -79,32 +77,16 @@ const columns = [
 	},
 ];
 
-const Orders = () => {
-	const dispatch = useDispatch();
-
-	const order = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).orders);
-	console.log(order);
-
-	useEffect(() => {
-		ordersFetch(dispatch);
-	}, [dispatch]);
-
-	const { orders, isFetching, error } = useSelector((state) => state.orders);
+const Pending = () => {
+	const orders = useSelector((state) => state.orders.orders.filter((items) => items.status === "pending"));
 	console.log(orders);
 
-	if (isFetching) {
-		return <Container>Fetching</Container>;
-	}
-	if (error) {
-		return (
-			<Container>
-				<Alert type="error" text="Connection Lost, Try Again" />
-			</Container>
-		);
+	if (!orders) {
+		return <Container>There was an error</Container>;
 	}
 	return (
 		<Container>
-			<Title>All Orders</Title>
+			<Title>Pending Orders</Title>
 			<div style={{ height: 550, width: "100%" }}>
 				<DataGrid
 					rows={orders}
@@ -119,4 +101,4 @@ const Orders = () => {
 	);
 };
 
-export default Orders;
+export default Pending;

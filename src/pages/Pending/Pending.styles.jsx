@@ -11,10 +11,10 @@ export const Container = styled.div`
 	a {
 		text-decoration: none;
 	}
-`;
-export const Span = styled.div`
-	color: ${(props) =>
-		props.value === "delivered" ? "#3bb077" : props.value === "pending" ? "#2a7ade" : "#ff2d2d"};
+
+	.status {
+		color: #2a7ade;
+	}
 `;
 export const Title = styled.div`
 	padding: 10px;
