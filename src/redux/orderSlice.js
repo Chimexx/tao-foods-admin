@@ -3,21 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 const orderSlice = createSlice({
 	name: "orders",
 	initialState: {
-		orders: [],
+		orderList: [],
 		isFetching: false,
 		error: false,
 	},
 	reducers: {
-		//Get Orders
-		ordersFetchStart: (state) => {
+		//Fetch Orders
+		fetchOrderStart: (state) => {
 			state.isFetching = true;
 		},
-		ordersFetchSuccess: (state, action) => {
+		fetchOrderSuccess: (state, action) => {
 			state.isFetching = false;
 			state.error = false;
-			state.orders = action.payload;
+			state.orderList = action.payload;
 		},
-		ordersFetchFailure: (state) => {
+		fetchOrderFailure: (state) => {
 			state.isFetching = false;
 			state.error = true;
 		},
@@ -28,21 +28,21 @@ const orderSlice = createSlice({
 		updateOrderSuccess: (state, action) => {
 			state.isFetching = false;
 			state.error = false;
-			state.orders[state.orders.findIndex((item) => item._id) === action.payload.id] =
-				action.payload.res;
+			state.orders[state.orderList.findIndex((item) => item._id) === action.payload.id] =
+				action.payload.data;
 		},
 		updateOrderFailure: (state) => {
 			state.isFetching = false;
 			state.error = true;
 		},
-		//Update Order
+		//Delete Order
 		deleteOrderStart: (state) => {
 			state.isFetching = true;
 		},
 		deleteOrderSuccess: (state, action) => {
 			state.isFetching = false;
 			state.error = false;
-			state.orders.splice([state.orders.findIndex((item) => item._id) === action.payload.id], 1);
+			state.orderList.splice([state.orderList.findIndex((item) => item._id) === action.payload.id], 1);
 		},
 		deleteOrderFailure: (state) => {
 			state.isFetching = false;
@@ -51,10 +51,12 @@ const orderSlice = createSlice({
 	},
 });
 
+export default orderSlice.reducer;
+export const getOrders = (state) => state.orders;
 export const {
-	ordersFetchStart,
-	ordersFetchSuccess,
-	ordersFetchFailure,
+	fetchOrderStart,
+	fetchOrderSuccess,
+	fetchOrderFailure,
 	updateOrderStart,
 	updateOrderSuccess,
 	updateOrderFailure,
@@ -62,4 +64,3 @@ export const {
 	deleteOrderSuccess,
 	deleteOrderFailure,
 } = orderSlice.actions;
-export default orderSlice.reducer;

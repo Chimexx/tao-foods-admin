@@ -4,6 +4,7 @@ import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { getOrders } from "../../redux/orderSlice";
 
 const columns = [
 	{ field: "_id", headerName: "ID", width: 100, hide: true },
@@ -78,8 +79,8 @@ const columns = [
 ];
 
 const Pending = () => {
-	const orders = useSelector((state) => state.orders.orders.filter((items) => items.status === "pending"));
-	console.log(orders);
+	const { orderList } = useSelector(getOrders);
+	const orders = orderList.filter((order) => order.status === "pending");
 
 	if (!orders) {
 		return <Container>There was an error</Container>;

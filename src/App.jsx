@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-toastify";
 import Orders from "./pages/Orders";
 import Topbar from "./components/Topbar";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import Sidebar from "./components/Sidebar";
 import Order from "./pages/Order";
@@ -16,10 +16,13 @@ import Login from "./pages/Login";
 import { useSelector } from "react-redux";
 import NotFound from "./pages/NotFound";
 import Pending from "./pages/Pending";
-import Delivered from "./pages/Pending copy";
+import Delivered from "./pages/Delivered";
+import Accounts from "./pages/Accounts";
+import EditAccount from "./pages/UserEdit";
+import { getUser } from "./redux/authSlice";
 
 function App() {
-	const { currentUser } = useSelector((state) => state.user);
+	const { currentUser } = useSelector(getUser);
 	console.log(currentUser);
 	return (
 		<>
@@ -40,6 +43,8 @@ function App() {
 								<Route path="/order/:id" exact component={Order} />
 								<Route path="/products" exact component={Products} />
 								<Route path="/product/:id" exact component={Product} />
+								<Route path="/accounts" exact component={Accounts} />
+								<Route path="/edit-account/:id" exact component={EditAccount} />
 								<Route path="/product/*" exact component={NotFound} />
 								<Route path="/newproduct/" exact component={NewProduct} />
 								<Route path="/customers" exact component={Customers} />

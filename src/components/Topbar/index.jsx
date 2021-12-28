@@ -2,22 +2,32 @@ import React from "react";
 import { useStyles } from "./Topbar.styles";
 import logo from "../../images/tao.svg";
 import { Badge, Button } from "@material-ui/core";
-import { NotificationsNone } from "@material-ui/icons";
+import { MeetingRoom, NotificationsNone } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { logout, ordersFetch } from "../../redux/apiRequests";
 import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { getUser } from "../../redux/authSlice";
+import { fetchOrders, userLogout } from "../../redux/apiRequests";
+import { getOrders } from "../../redux/orderSlice";
 
 const Topbar = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const history = useHistory();
 
-	const { currentUser } = useSelector((state) => state.user);
+	const { currentUser } = useSelector(getUser);
 
 	const handleLogout = () => {
-		logout(dispatch);
+		userLogout(dispatch);
+		history.push("/");
 	};
 
-	const orders = useSelector((state) => state.orders.orders.filter((items) => items.status === "pending"));
+	useEffect(() => {
+		fetchOrders(dispatch);
+	}, [dispatch]);
+
+	const { orderList } = useSelector(getOrders);
+	const orders = orderList.filter((order) => order.status === "pending");
 
 	return (
 		<div className={classes.topbar}>
@@ -29,13 +39,18 @@ const Topbar = () => {
 					{currentUser && (
 						<div className={classes.account}>
 							<div className={classes.user}>{currentUser.username}</div>
-							<Button size="small" className={classes.button} onClick={handleLogout}>
-								Logout
+							<Button
+								variant="outlined"
+								size="small"
+								className={classes.button}
+								onClick={handleLogout}
+							>
+								<MeetingRoom /> Logout
 							</Button>
 						</div>
 					)}
 					<div className="icons">
-						<Badge badgeContent={orders.length} color="error">
+						<Badge badgeContent={orders?.length} color="error">
 							<NotificationsNone className={classes.icon} />
 						</Badge>
 					</div>

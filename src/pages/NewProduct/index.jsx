@@ -24,7 +24,7 @@ import { storage } from "../../firebase";
 import { useDispatch } from "react-redux";
 import { createProduct } from "../../redux/apiRequests";
 import { toast } from "react-toastify";
-import { PulseSpinner } from "react-spinners-kit";
+import { ClassicSpinner } from "react-spinners-kit";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -51,6 +51,7 @@ const NewProduct = () => {
 	const [category, setCategory] = useState([]);
 	const [file, setFile] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [inputE, setInputE] = useState(false);
 
 	const handleInStock = (event) => {
 		setInStock(event.target.value);
@@ -61,47 +62,50 @@ const NewProduct = () => {
 
 	const handleSubmit = () => {
 		setLoading(true);
-		const storageRef = ref(storage, "images/" + file.name);
-		const uploadTask = uploadBytesResumable(storageRef, file);
-		uploadTask.on(
-			"state_changed",
-			(snapshot) => {},
-			(error) => {
-				toast.error(`There was a problem, try again`, {
-					position: toast.POSITION.BOTTOM_RIGHT,
-					autoClose: 3000,
-				});
-				console.log(error);
-				setLoading(false);
-			},
-			() => {
-				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-					createProduct(dispatch, {
-						title,
-						price,
-						desc,
-						inStock,
-						requireSauce,
-						category,
-						img: downloadURL,
-						imgName: file.name,
-					});
-					setTitle("");
-					setPrice("");
-					setDesc("");
-					setInStock("");
-					setRequireSauce("");
-					setCategory("");
-					setFile(null);
-
-					toast.success(`${title} was added!`, {
+		if (title && price && desc && category) {
+			setInputE(false);
+			const storageRef = ref(storage, "images/" + file.name);
+			const uploadTask = uploadBytesResumable(storageRef, file);
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {},
+				(error) => {
+					toast.error(`There was a problem, try again`, {
 						position: toast.POSITION.BOTTOM_RIGHT,
 						autoClose: 3000,
 					});
+					console.log(error);
 					setLoading(false);
-				});
-			}
-		);
+				},
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+						dispatch(
+							createProduct({
+								title,
+								price,
+								desc,
+								inStock,
+								requireSauce,
+								category,
+								img: downloadURL,
+								imgName: file.name,
+							})
+						);
+						setTitle("");
+						setPrice("");
+						setDesc("");
+						setInStock("");
+						setRequireSauce("");
+						setCategory("");
+						setFile(null);
+						setLoading(false);
+					});
+				}
+			);
+		} else {
+			setInputE(true);
+			setLoading(false);
+		}
 	};
 
 	return (
@@ -114,6 +118,9 @@ const NewProduct = () => {
 						variant="filled"
 						size="small"
 						className="input"
+						error={inputE}
+						value={title}
+						helperText={inputE && "Field Required"}
 						onChange={(e) => setTitle(e.target.value)}
 					/>
 					<TextField
@@ -122,24 +129,31 @@ const NewProduct = () => {
 						variant="filled"
 						size="small"
 						className="input"
+						error={inputE}
+						value={desc}
+						helperText={inputE && "Field Required"}
 						onChange={(e) => setDesc(e.target.value)}
 					/>
 					<TextField
 						label="Item Price"
 						id="filled-size-small"
 						type="number"
-						defaultValue=""
 						variant="filled"
 						size="small"
 						className="input"
+						error={inputE}
+						value={price}
+						helperText={inputE && "Field Required"}
 						onChange={(e) => setPrice(e.target.value)}
 					/>
 					<TextField
 						label="Item Categories"
 						id="filled-size-small"
-						defaultValue=""
 						variant="filled"
 						size="small"
+						error={inputE}
+						value={category}
+						helperText={inputE && "Field Required"}
 						className="input"
 						onChange={(e) => setCategory(e.target.value.split(","))}
 					/>
@@ -207,8 +221,14 @@ const NewProduct = () => {
 				<Hr />
 				<Update>
 					<PostBtn onClick={handleSubmit}>
-						{loading ? <PulseSpinner size={25} color="#00b600" /> : <CheckCircle />}
-						SUBMIT
+						{loading ? (
+							<div className="spinner">
+								<ClassicSpinner size={15} color="#00b600" />
+							</div>
+						) : (
+							<CheckCircle />
+						)}
+						Save
 					</PostBtn>
 				</Update>
 			</Wrapper>

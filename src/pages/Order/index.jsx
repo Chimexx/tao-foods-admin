@@ -6,6 +6,9 @@ import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { ClassicSpinner } from "react-spinners-kit";
 import { deleteOrder, updateOrder } from "../../redux/apiRequests";
+import { getOrders } from "../../redux/orderSlice";
+// import { deleteOrder, updateOrder } from "../../redux/apiRequests";
+// import { getOrders } from "../../redux/orderSlice";
 import {
 	Container,
 	Details,
@@ -34,18 +37,17 @@ const Order = () => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const history = useHistory();
-
 	const [status, setStatus] = React.useState("");
 	const [loading, setLoading] = React.useState(false);
 
 	const id = location.pathname.split("/")[2];
 
-	const order = useSelector((state) => state.orders.orders.find((order) => order._id === id));
+	const { orders } = useSelector(getOrders);
+	const order = orders.find((order) => order._id === id);
 
 	if (!order) {
 		return <Container>There was an error</Container>;
 	}
-
 	const handleStatus = () => {
 		setLoading(true);
 		updateOrder(id, { ...order, status }, dispatch);
@@ -56,7 +58,6 @@ const Order = () => {
 		history.push("/orders");
 		setLoading(false);
 	};
-
 	return (
 		<Container>
 			<Details>
@@ -90,7 +91,6 @@ const Order = () => {
 						</OrderItem>
 					);
 				})}
-
 				<OrderDetails>
 					<Shipping>
 						<Title>Shipping Details</Title>

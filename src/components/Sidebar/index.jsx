@@ -3,24 +3,19 @@ import {
 	DoneAll,
 	HourglassEmpty,
 	LineStyle,
-	People,
 	Storefront,
 	AccountBalanceWallet,
 	ListAlt,
+	AccountCircle,
 } from "@material-ui/icons";
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import { Container, ListItem, Menu, Title, Wrapper, List, Subtitle, DashTitle } from "./Sidebar.styles";
+import { getUser } from "../../redux/authSlice";
 
 const Sidebar = () => {
-	const [active, setActive] = useState(true);
-
-	const handleActive = (id) => {
-		const myDiv = document.getElementById(`${id}`);
-		console.log(myDiv);
-
-		myDiv.classList.add("active");
-	};
+	const { currentUser } = useSelector(getUser);
 
 	return (
 		<Container>
@@ -40,7 +35,7 @@ const Sidebar = () => {
 					<Title>Orders</Title>
 					<List>
 						<Link to="/orders">
-							<ListItem id="allOrders" onClick={() => handleActive("allOrders")}>
+							<ListItem id="allOrders">
 								<LineStyle className="icon" />
 								<Subtitle>All Orders</Subtitle>
 							</ListItem>
@@ -74,18 +69,20 @@ const Sidebar = () => {
 								<Subtitle>Create New</Subtitle>
 							</ListItem>
 						</Link>
-						<Link to="/customers">
-							<ListItem>
-								<People className="icon" />
-								<Subtitle>Customers</Subtitle>
-							</ListItem>
-						</Link>
 						<Link to="/transactions">
 							<ListItem>
 								<AccountBalanceWallet className="icon" />
 								<Subtitle>Transactions</Subtitle>
 							</ListItem>
 						</Link>
+						{(currentUser.role === "admin" || currentUser.role === "manager") && (
+							<Link to="/accounts">
+								<ListItem>
+									<AccountCircle className="icon" />
+									<Subtitle>Accounts</Subtitle>
+								</ListItem>
+							</Link>
+						)}
 					</List>
 				</Menu>
 			</Wrapper>

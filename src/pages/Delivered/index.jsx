@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container, Title } from "./Delivered.styles";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { ordersFetch } from "../../redux/apiRequests";
+import { useSelector } from "react-redux";
+import { getOrders } from "../../redux/orderSlice";
 
 const columns = [
 	{ field: "_id", headerName: "ID", width: 100, hide: true },
@@ -79,9 +79,8 @@ const columns = [
 ];
 
 const Delivered = () => {
-	const orders = useSelector((state) =>
-		state.orders.orders.filter((items) => items.status === "delivered")
-	);
+	const { orderList } = useSelector(getOrders);
+	const orders = orderList.filter((order) => order.status === "delivered");
 
 	if (!orders) {
 		return <Container>There was an error</Container>;

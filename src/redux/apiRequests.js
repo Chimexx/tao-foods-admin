@@ -1,19 +1,7 @@
-import { loginStart, loginSuccess, loginFailure, userLogout } from "./userSlice";
 import {
-	ordersFetchStart,
-	ordersFetchSuccess,
-	ordersFetchFailure,
-	updateOrderStart,
-	updateOrderFailure,
-	updateOrderSuccess,
-	deleteOrderStart,
-	deleteOrderSuccess,
-	deleteOrderFailure,
-} from "./orderSlice";
-import {
-	productsFetchStart,
-	productsFetchSuccess,
-	productsFetchFailure,
+	fetchProductStart,
+	fetchProductSuccess,
+	fetchProductFailure,
 	createProductStart,
 	createProductSuccess,
 	createProductFailure,
@@ -24,150 +12,184 @@ import {
 	deleteProductSuccess,
 	deleteProductFailure,
 } from "./productSlice";
+import {
+	updateUserStart,
+	updateUserSuccess,
+	updateUserFailure,
+	createUserStart,
+	createUserSuccess,
+	createUserFailure,
+	fetchUsersStart,
+	fetchUsersSuccess,
+	fetchUsersFailure,
+	deleteUserStart,
+	deleteUserSuccess,
+	deleteUserFailure,
+} from "./userSlice";
+import { authRequest, publicRequest } from "./requestMethods";
+import { loginFailure, loginStart, loginSuccess, logout } from "./authSlice";
+import {
+	fetchOrderStart,
+	fetchOrderFailure,
+	fetchOrderSuccess,
+	deleteOrderFailure,
+	deleteOrderStart,
+	deleteOrderSuccess,
+	updateOrderFailure,
+	updateOrderStart,
+	updateOrderSuccess,
+} from "./orderSlice";
 
-const TOKEN = localStorage.getItem("persist:root")
-	? JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser?.accessToken
-	: "";
-
+//Login request
 export const login = async (dispatch, data) => {
 	dispatch(loginStart());
 	try {
-		const endpoint = "https://tao-foods.herokuapp.com/api/auth/login";
-
-		const res = await (
-			await fetch(endpoint, {
-				method: "POST",
-				body: JSON.stringify(data),
-				headers: { "Content-type": "application/json" },
-			})
-		)?.json();
-		dispatch(loginSuccess(res));
-		console.log(res);
+		const res = await publicRequest.post("auth/login", data);
+		dispatch(loginSuccess(res.data));
 	} catch (error) {
 		dispatch(loginFailure());
 		console.log(error);
 	}
 };
 
-export const logout = async (dispatch) => {
-	dispatch(userLogout());
-};
-
-export const ordersFetch = async (dispatch) => {
-	dispatch(ordersFetchStart());
+//Logout request
+export const userLogout = async (dispatch) => {
 	try {
-		const endpoint = "https://tao-foods.herokuapp.com/api/orders";
-
-		const res = await (
-			await fetch(endpoint, {
-				method: "GET",
-				headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
-			})
-		)?.json();
-		dispatch(ordersFetchSuccess(res));
+		dispatch(logout());
 	} catch (error) {
 		console.log(error);
-		dispatch(ordersFetchFailure());
+	}
+};
+//Fetch Users
+export const fetchUsers = async (dispatch) => {
+	dispatch(fetchUsersStart());
+	try {
+		const res = await authRequest.get("users");
+		await dispatch(fetchUsersSuccess(res.data));
+	} catch (error) {
+		dispatch(fetchUsersFailure());
+		console.log(error);
 	}
 };
 
+//Create User
+export const createUser = async (dispatch, data) => {
+	dispatch(createUserStart());
+	try {
+		const res = await authRequest.post("auth/register", data);
+		await dispatch(createUserSuccess(res.data));
+	} catch (error) {
+		dispatch(createUserFailure());
+		console.log(error);
+	}
+};
+
+//Update User
+export const updateUser = async (id, data, dispatch) => {
+	dispatch(updateUserStart());
+	try {
+		const res = await authRequest.put(`users/${id}`, data);
+		console.log(data);
+		await dispatch(updateUserSuccess({ id, data: res.data }));
+	} catch (error) {
+		dispatch(updateUserFailure());
+		console.log(error);
+	}
+};
+
+//Delete User
+export const deleteUser = async (dispatch, id) => {
+	dispatch(deleteUserStart());
+	try {
+		await authRequest.delete(`users/${id}`);
+		await dispatch(deleteUserSuccess(id));
+	} catch (error) {
+		dispatch(deleteUserFailure());
+
+		console.log(error);
+	}
+};
+
+//Fetch Orders
+export const fetchOrders = async (dispatch) => {
+	dispatch(fetchOrderStart());
+	try {
+		const res = await authRequest.get("orders");
+		await dispatch(fetchOrderSuccess(res.data));
+	} catch (error) {
+		dispatch(fetchOrderFailure());
+		console.log(error);
+	}
+};
+
+//Update Orders
 export const updateOrder = async (id, data, dispatch) => {
 	dispatch(updateOrderStart());
 
 	try {
-		const endpoint = `https://tao-foods.herokuapp.com/api/orders/${id}`;
-
-		const res = await (
-			await fetch(endpoint, {
-				method: "PUT",
-				body: JSON.stringify(data),
-				headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
-			})
-		)?.json();
-		dispatch(updateOrderSuccess({ id, res }));
+		const res = await authRequest.put(`orders/${id}`, data);
+		await dispatch(updateOrderSuccess({ id, data: res.data }));
 	} catch (error) {
 		dispatch(updateOrderFailure());
 		console.log(error);
 	}
 };
+
+//Delete Orders
 export const deleteOrder = async (id, dispatch) => {
 	dispatch(deleteOrderStart());
-
 	try {
-		const endpoint = `https://tao-foods.herokuapp.com/api/orders/${id}`;
-
-		await fetch(endpoint, {
-			method: "DELETE",
-			headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
-		});
-		dispatch(deleteOrderSuccess({ id }));
+		await authRequest.delete(`orders/${id}`);
+		await dispatch(deleteOrderSuccess({ id }));
 	} catch (error) {
 		dispatch(deleteOrderFailure());
 		console.log(error);
 	}
 };
 
-export const productsFetch = async (dispatch) => {
-	dispatch(productsFetchStart());
+//Fetch Products
+export const fetchProducts = async (dispatch) => {
+	dispatch(fetchProductStart());
 	try {
-		const endpoint = "https://tao-foods.herokuapp.com/api/dishes";
-
-		const res = await (await fetch(endpoint))?.json();
-		dispatch(productsFetchSuccess(res));
+		const res = await authRequest.get("dishes");
+		await dispatch(fetchProductSuccess(res.data));
 	} catch (error) {
+		dispatch(fetchProductFailure());
 		console.log(error);
-		dispatch(productsFetchFailure());
 	}
 };
 
-export const createProduct = async (dispatch, data) => {
+//Create Products
+export const createProduct = async (data, dispatch) => {
 	dispatch(createProductStart());
 	try {
-		const endpoint = "https://tao-foods.herokuapp.com/api/dishes/new";
-
-		const res = await (
-			await fetch(endpoint, {
-				method: "POST",
-				body: JSON.stringify(data),
-				headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
-			})
-		)?.json();
-		dispatch(createProductSuccess(res));
+		const res = await authRequest.post("dishes/new", data);
+		await dispatch(createProductSuccess(res.data));
 	} catch (error) {
 		dispatch(createProductFailure());
 		console.log(error);
 	}
 };
+
+//Update Products
 export const updateProduct = async (id, data, dispatch) => {
 	dispatch(updateProductStart());
-
 	try {
-		const endpoint = `https://tao-foods.herokuapp.com/api/dishes/update/${id}`;
-
-		const res = await (
-			await fetch(endpoint, {
-				method: "PUT",
-				body: JSON.stringify(data),
-				headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
-			})
-		)?.json();
-		dispatch(updateProductSuccess({ id, res }));
+		const res = await authRequest.put(`dishes/${id}`, data);
+		await dispatch(updateProductSuccess({ id, data: res.data }));
 	} catch (error) {
 		dispatch(updateProductFailure());
 		console.log(error);
 	}
 };
+
+//Delete Products
 export const deleteProduct = async (id, dispatch) => {
 	dispatch(deleteProductStart());
-
 	try {
-		const endpoint = `https://tao-foods.herokuapp.com/api/dishes/${id}`;
+		await authRequest.delete(`dishes/${id}`);
 
-		await fetch(endpoint, {
-			method: "DELETE",
-			headers: { "Content-type": "application/json", TOKEN: `Bearer ${TOKEN}` },
-		});
-		dispatch(deleteProductSuccess({ id }));
+		await dispatch(deleteProductSuccess({ id }));
 	} catch (error) {
 		dispatch(deleteProductFailure());
 		console.log(error);

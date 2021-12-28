@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/apiRequests";
 import bg from "../../images/login.jpg";
+import { getUsers } from "../../redux/userSlice";
 
 //styles
 import {
@@ -18,12 +19,13 @@ import {
 	Image,
 	Content,
 } from "./Login.styles";
+import { getUser } from "../../redux/authSlice";
 
 const Login = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
-	const { isFetching, error } = useSelector((state) => state.user);
+	const { isFetching, error } = useSelector(getUser);
 
 	const dispatch = useDispatch();
 
@@ -49,7 +51,7 @@ const Login = () => {
 						/>
 						<TextField
 							id="outlined-basic"
-							label="PassWord"
+							label="Password"
 							variant="filled"
 							type="password"
 							size="small"

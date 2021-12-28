@@ -32,6 +32,7 @@ import { CheckCircleOutlined, DeleteOutlined } from "@material-ui/icons";
 import { toast } from "react-toastify";
 import { ClassicSpinner } from "react-spinners-kit";
 import { useHistory } from "react-router-dom";
+import { getProducts } from "../../redux/productSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -57,18 +58,19 @@ const Product = () => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const history = useHistory();
-
 	const id = location.pathname.split("/")[2];
-	const product = useSelector((state) => state.products.products.find((item) => item._id === id));
 
 	const [requireSauce, setRequireStock] = React.useState("");
 	const [inStock, setInStock] = React.useState("");
 	const [title, setTitle] = React.useState("");
-	const [price, setPrice] = React.useState("");
+	const [price, setPrice] = React.useState(null);
 	const [desc, setDesc] = React.useState("");
 	const [category, setCategory] = React.useState(undefined);
 	const [file, setFile] = React.useState(null);
 	const [loading, setLoading] = React.useState(false);
+
+	const { products } = useSelector(getProducts);
+	const product = products.find((product) => product._id === id);
 
 	const handleInStock = (event) => {
 		setInStock(event.target.value);
@@ -76,18 +78,12 @@ const Product = () => {
 	const handleReqSauce = (event) => {
 		setRequireStock(event.target.value);
 	};
-
 	const handleDelete = () => {
 		setLoading(true);
 		deleteProduct(id, dispatch);
-		toast.warn("Item deleted!", {
-			position: toast.POSITION.BOTTOM_RIGHT,
-			autoClose: 3000,
-		});
 		setLoading(false);
 		history.push("/products");
 	};
-
 	const handleUpdate = async () => {
 		setLoading(true);
 		// I need to delete this file first so as to replace it with a new one
@@ -96,7 +92,6 @@ const Product = () => {
 			//If there is a file
 			const imageRef = ref(storage, `images/${product.imgName}`);
 			// Delete the file
-
 			await deleteObject(imageRef)
 				.then(() => {})
 				.catch((error) => {
@@ -135,11 +130,6 @@ const Product = () => {
 							},
 							dispatch
 						);
-						toast.success(`${title ? title : product.title} was update!`, {
-							position: toast.POSITION.BOTTOM_RIGHT,
-							autoClose: 3000,
-						});
-						setLoading(false);
 					});
 				}
 			);
@@ -160,19 +150,12 @@ const Product = () => {
 				dispatch
 			);
 			console.log(title, price, desc, inStock, requireSauce);
-
-			toast.success(`${title ? title : product.title} was updated!`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				autoClose: 3000,
-			});
 			setLoading(false);
 		}
 	};
-
 	if (!product) {
 		return <Container>There was an error</Container>;
 	}
-
 	return (
 		<Container>
 			<Head>Edit Product</Head>
@@ -216,7 +199,6 @@ const Product = () => {
 					<InputGroup>
 						<TextField
 							label="Item Name"
-							id="filled-size-small"
 							variant="filled"
 							size="small"
 							defaultValue={product.title}
@@ -225,7 +207,6 @@ const Product = () => {
 						/>
 						<TextField
 							label="Item Description"
-							id="filled-size-small"
 							defaultValue={product.desc}
 							variant="filled"
 							size="small"
@@ -234,7 +215,6 @@ const Product = () => {
 						/>
 						<TextField
 							label="Item Price"
-							id="filled-size-small"
 							type="number"
 							defaultValue={product.price}
 							variant="filled"
@@ -245,7 +225,6 @@ const Product = () => {
 						/>
 						<TextField
 							label="Item Category"
-							id="filled-size-small"
 							defaultValue={product.category}
 							variant="filled"
 							size="small"
@@ -256,7 +235,6 @@ const Product = () => {
 							<input
 								accept="image/*"
 								className={classes.input}
-								id="contained-button-file"
 								type="file"
 								onChange={(e) => setFile(e.target.files[0])}
 							/>
@@ -314,7 +292,7 @@ const Product = () => {
 					</SwitchGroup>
 					<Hr />
 					<Update>
-						<ActionBtn status="approve" disabled={loading} onClick={handleUpdate}>
+						<ActionBtn disabled={loading} onClick={handleUpdate}>
 							{loading ? (
 								<div className="spinner">
 									<ClassicSpinner size={15} color="#06af00" />

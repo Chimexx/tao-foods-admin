@@ -4,7 +4,10 @@ import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { productsFetch } from "../../redux/apiRequests";
+import { fetchProducts } from "../../redux/apiRequests";
+import { getProducts } from "../../redux/productSlice";
+import Loading from "../../components/Loading";
+import Alert from "../../components/Alert";
 
 const columns = [
 	{ field: "_id", headerName: "ID", width: 100, hide: true },
@@ -81,13 +84,25 @@ const columns = [
 
 const Products = () => {
 	const dispatch = useDispatch();
-
 	useEffect(() => {
-		productsFetch(dispatch);
+		fetchProducts(dispatch);
 	}, [dispatch]);
-
-	const { products } = useSelector((state) => state.products);
-
+	const { products, error, isFetching } = useSelector(getProducts);
+	console.log(error);
+	if (isFetching) {
+		return (
+			<Container>
+				<Loading />
+			</Container>
+		);
+	}
+	if (error) {
+		return (
+			<Container>
+				<Alert type="error" text="Connection Lost, Try Again" />
+			</Container>
+		);
+	}
 	return (
 		<Container>
 			<Head>
@@ -96,7 +111,6 @@ const Products = () => {
 					<CreateBtn>CREATE NEW</CreateBtn>
 				</Link>
 			</Head>
-
 			<div style={{ height: 550, width: "100%" }}>
 				<DataGrid
 					rows={products}

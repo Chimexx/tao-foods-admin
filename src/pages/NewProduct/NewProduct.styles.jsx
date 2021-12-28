@@ -11,26 +11,64 @@ export const RadioDiv = styled.div`
 `;
 export const PostBtn = styled.button`
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 3px 5px;
-	height: 35px;
-	border-radius: 6px;
-	color: #00b600;
-	background-color: #fff;
-	border: 1px solid #00b600;
+	height: 40px;
+	padding: 3px 0px;
+	padding-left: 4px;
+	padding-right: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border: none;
+	font-size: 14px;
 	font-weight: 600;
-	cursor: ${(props) => (props.disabled ? "none" : "pointer")};
-	transition: ease-in-out 0.3s;
+	justify-content: flex-start;
+	align-items: center;
+	margin-right: 10px;
+	box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+	cursor: pointer;
+	color: #06af00;
+	border-left: 3px solid #06af00;
+	background-color: #e5ffe4;
+	transition: all ease-in-out 0.3s;
 
-	.check {
-		margin-right: 5px;
+	&:disabled {
+		cursor: wait;
 	}
 
 	&:hover {
-		color: #fff;
-		background-color: ${(props) => (props.disabled ? "none" : "#00b600")};
-		box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+		box-shadow: none;
+	}
+
+	.icon {
+		background-color: #fff;
+		padding: 4px;
+		height: 20px;
+		width: 20px;
+		border-radius: 50%;
+		margin-left: 4px;
+
+		@media screen and (max-width: 768px) {
+			padding: 2px;
+		}
+	}
+	.spinner {
+		padding: 4px;
+		margin-left: 4px;
+
+		@media screen and (max-width: 768px) {
+			padding: 2px;
+		}
+	}
+	.text {
+		margin-left: 5px;
+	}
+
+	@media screen and (max-width: 768px) {
+		height: 30px;
+		padding: 2px 0px;
+		padding-right: 5px;
+		font-size: 12px;
+		font-weight: 300;
+		justify-content: space-between;
 	}
 `;
 
@@ -61,20 +99,31 @@ export const SwitchGroup = styled.div`
 		}
 	}
 	.radioText {
-		font-weight: 600;
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		border-left: 3px solid #ff8400;
+		background-color: #fafafa;
+		padding: 3px 10px;
 		font-size: 18px;
-		color: #646464;
-		margin: 0px;
-		padding: 0px;
+		font-weight: 500;
+		margin: 0;
+		margin-bottom: 10px;
+		color: #474747;
 
 		@media screen and (max-width: 768px) {
-			font-weight: 500;
-			font-size: 16px;
+			padding: 2px 5px;
+			font-size: 14px;
+			font-weight: 300;
+			margin-bottom: 5px;
 		}
 	}
 	.formControl {
 		display: flex;
 		flex-direction: row;
+
+		@media screen and (max-width: 768px) {
+			justify-content: space-between;
+		}
 	}
 `;
 export const InputGroup = styled.div`

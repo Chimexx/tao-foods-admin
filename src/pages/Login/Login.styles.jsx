@@ -46,6 +46,9 @@ export const Content = styled.div`
 	}
 `;
 export const Form = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 600px;
 	.input {
 		margin: 10px 0;
 		width: 100%;
@@ -95,6 +98,7 @@ export const Button = styled.button`
 	background-color: orangered;
 	color: white;
 	transition: ease all 0.3s;
+	cursor: pointer;
 
 	&:disabled {
 		background-color: #f7c7b5;

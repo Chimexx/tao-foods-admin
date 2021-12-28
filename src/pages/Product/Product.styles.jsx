@@ -198,7 +198,7 @@ export const ActionBtn = styled.button`
 	cursor: pointer;
 	color: ${(props) => (props.status === "delete" ? "#fd2a2a" : "#06af00")};
 	border-left: 3px solid ${(props) => (props.status === "delete" ? "#fd2a2a" : "#06af00")};
-	background-color: ${(props) => (props.status === "approve" ? "#e5ffe4" : "#ffe0e0")};
+	background-color: ${(props) => (props.status === "delete" ? "#ffe0e0" : "#e5ffe4")};
 	transition: all ease-in-out 0.3s;
 
 	&:disabled {

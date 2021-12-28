@@ -4,8 +4,10 @@ import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ordersFetch } from "../../redux/apiRequests";
+import { fetchOrders } from "../../redux/apiRequests";
 import Alert from "../../components/Alert";
+import Loading from "../../components/Loading";
+import { getOrders } from "../../redux/orderSlice";
 
 const columns = [
 	{ field: "_id", headerName: "ID", width: 100, hide: true },
@@ -82,23 +84,23 @@ const columns = [
 const Orders = () => {
 	const dispatch = useDispatch();
 
-	const order = JSON.parse(JSON.parse(localStorage.getItem("persist:root")).orders);
-	console.log(order);
-
 	useEffect(() => {
-		ordersFetch(dispatch);
+		fetchOrders(dispatch);
 	}, [dispatch]);
 
-	const { orders, isFetching, error } = useSelector((state) => state.orders);
-	console.log(orders);
+	const { orderList, error, isFetching } = useSelector(getOrders);
 
 	if (isFetching) {
-		return <Container>Fetching</Container>;
+		return (
+			<Container>
+				<Loading />
+			</Container>
+		);
 	}
 	if (error) {
 		return (
 			<Container>
-				<Alert type="error" text="Connection Lost, Try Again" />
+				<Alert type="error" text="There was a problem, Try Again" />
 			</Container>
 		);
 	}
@@ -107,7 +109,7 @@ const Orders = () => {
 			<Title>All Orders</Title>
 			<div style={{ height: 550, width: "100%" }}>
 				<DataGrid
-					rows={orders}
+					rows={orderList}
 					columns={columns}
 					getRowId={(row) => row._id}
 					pageSize={10}
