@@ -9,6 +9,21 @@ export const Hr = styled.hr`
 export const RadioDiv = styled.div`
 	margin-right: 30px;
 `;
+
+export const Title = styled.div`
+	padding: 10px;
+	font-weight: 600;
+	color: #fff;
+	font-size: 24px;
+	background-color: #ff8400;
+
+	@media screen and (max-width: 768px) {
+		padding: 5px;
+		font-weight: 400;
+		font-size: 18px;
+	}
+`;
+
 export const PostBtn = styled.button`
 	display: flex;
 	height: 40px;

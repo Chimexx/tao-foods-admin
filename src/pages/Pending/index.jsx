@@ -37,7 +37,7 @@ const columns = [
 		},
 	},
 	{
-		field: "cartTotalQty",
+		field: "totalQty",
 		headerName: "Qty",
 		type: "number",
 		width: 100,
@@ -49,6 +49,9 @@ const columns = [
 		type: "number",
 		width: 150,
 		editable: false,
+		renderCell: (params) => {
+			return <span>₦{params.row.amount}</span>;
+		},
 	},
 	{
 		field: "status",

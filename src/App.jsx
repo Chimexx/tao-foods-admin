@@ -11,7 +11,6 @@ import Order from "./pages/Order";
 import Products from "./pages/Products";
 import Product from "./pages/Product";
 import NewProduct from "./pages/NewProduct";
-import Customers from "./pages/Customers";
 import Login from "./pages/Login";
 import { useSelector } from "react-redux";
 import NotFound from "./pages/NotFound";
@@ -19,6 +18,7 @@ import Pending from "./pages/Pending";
 import Delivered from "./pages/Delivered";
 import Accounts from "./pages/Accounts";
 import EditAccount from "./pages/UserEdit";
+import Transactions from "./pages/Transactions";
 import { getUser } from "./redux/authSlice";
 
 function App() {
@@ -47,7 +47,7 @@ function App() {
 								<Route path="/edit-account/:id" exact component={EditAccount} />
 								<Route path="/product/*" exact component={NotFound} />
 								<Route path="/newproduct/" exact component={NewProduct} />
-								<Route path="/customers" exact component={Customers} />
+								<Route path="/transactions" exact component={Transactions} />
 								<Route path="*" component={NotFound} />
 							</Switch>
 						</>

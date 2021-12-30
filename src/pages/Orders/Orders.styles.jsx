@@ -12,10 +12,12 @@ export const Container = styled.div`
 		text-decoration: none;
 	}
 `;
-export const Span = styled.div`
+export const Span = styled.span`
+	text-align: center;
 	color: ${(props) =>
 		props.value === "delivered" ? "#3bb077" : props.value === "pending" ? "#2a7ade" : "#ff2d2d"};
 `;
+
 export const Title = styled.div`
 	padding: 10px;
 	font-weight: 600;

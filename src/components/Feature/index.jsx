@@ -1,15 +1,28 @@
 import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { publicRequest } from "../../redux/requestMethods";
 
 import { useStyles } from "./Feature.styles";
 const Feature = () => {
 	const classes = useStyles({});
+	const [income, setIncome] = useState([]);
+
+	useEffect(() => {
+		const getStats = async () => {
+			const res = await publicRequest.get("orders/stats");
+			setIncome(res.data);
+		};
+		getStats();
+	}, []);
+
+	console.log(income);
 	return (
 		<div className={classes.featured}>
 			<div className={classes.featuredItem}>
 				<span className={classes.title}>Revenue</span>
 				<div className={classes.moneyContainer}>
-					<span className={classes.money}>2,000</span>
+					<span className={classes.money}>{income[1]?.total}</span>
 					<span className={classes.rate}>
 						<ArrowDownward className={classes.down} /> -11
 					</span>

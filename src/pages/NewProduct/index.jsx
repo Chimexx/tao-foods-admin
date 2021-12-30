@@ -18,6 +18,7 @@ import {
 	InputGroup,
 	SwitchGroup,
 	PostBtn,
+	Title,
 } from "./NewProduct.styles";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
@@ -110,6 +111,7 @@ const NewProduct = () => {
 
 	return (
 		<Container>
+			<Title>Add New Item</Title>
 			<Wrapper>
 				<InputGroup>
 					<TextField

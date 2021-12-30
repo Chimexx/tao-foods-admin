@@ -7,8 +7,7 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { ClassicSpinner } from "react-spinners-kit";
 import { deleteOrder, updateOrder } from "../../redux/apiRequests";
 import { getOrders } from "../../redux/orderSlice";
-// import { deleteOrder, updateOrder } from "../../redux/apiRequests";
-// import { getOrders } from "../../redux/orderSlice";
+import dayjs from "dayjs";
 import {
 	Container,
 	Details,
@@ -42,8 +41,8 @@ const Order = () => {
 
 	const id = location.pathname.split("/")[2];
 
-	const { orders } = useSelector(getOrders);
-	const order = orders.find((order) => order._id === id);
+	const { orderList } = useSelector(getOrders);
+	const order = orderList.find((order) => order._id === id);
 
 	if (!order) {
 		return <Container>There was an error</Container>;
@@ -86,6 +85,10 @@ const Order = () => {
 								<Wrapper>
 									<Caption>Sauce</Caption>
 									<Value>{item.sauce}</Value>
+								</Wrapper>
+								<Wrapper>
+									<Caption>Payment</Caption>
+									<Value>{order.paymentMethod}</Value>
 								</Wrapper>
 							</OrderInfo>
 						</OrderItem>
@@ -130,6 +133,10 @@ const Order = () => {
 								<OrderAmount>
 									<Id>Order Status</Id>
 									<OrderStatus value={order?.status}>{order.status}</OrderStatus>
+								</OrderAmount>
+								<OrderAmount>
+									<Id>Ordered Date</Id>
+									{dayjs(order.createdAt).format("MMM-DD-YYYY")}
 								</OrderAmount>
 							</div>
 						</div>

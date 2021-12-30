@@ -1,16 +1,14 @@
 import React, { useEffect } from "react";
-import { Container, Title, Span } from "./Orders.styles";
+import { Container, Title } from "./Transactions.styles";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders } from "../../redux/apiRequests";
-import Alert from "../../components/Alert";
-import Loading from "../../components/Loading";
 import { getOrders } from "../../redux/orderSlice";
 
 const columns = [
-	{ field: "_id", headerName: "ID", width: 100, hide: true },
+	{ field: "id", headerName: "ID", width: 100, hide: true },
 	{
 		field: "firstName",
 		headerName: "First name",
@@ -30,39 +28,49 @@ const columns = [
 		},
 	},
 	{
-		field: "phoneNumber",
+		field: "phone",
 		headerName: "Phone",
-		type: "number",
-		width: 130,
+		width: 150,
 		editable: false,
 		renderCell: (params) => {
 			return <span>{params.row.shipping.phoneNumber}</span>;
 		},
 	},
 	{
-		field: "totalQty",
-		headerName: "Qty",
-		type: "number",
-		width: 100,
+		field: "ref",
+		headerName: "Reference",
+		width: 150,
 		editable: false,
+		renderCell: (params) => {
+			return <span value={params.row.reference}>{params.row.reference}</span>;
+		},
+	},
+
+	{
+		field: "address",
+		headerName: "Address",
+		width: 150,
+		editable: false,
+		renderCell: (params) => {
+			return <span>{params.row.shipping.address}</span>;
+		},
+	},
+	{
+		field: "payment",
+		headerName: "Payment",
+		width: 150,
+		editable: false,
+		renderCell: (params) => {
+			return <span>{params.row.paymentMethod}</span>;
+		},
 	},
 	{
 		field: "amount",
 		headerName: "Amount",
-		type: "number",
 		width: 150,
 		editable: false,
 		renderCell: (params) => {
 			return <span>₦{params.row.amount}</span>;
-		},
-	},
-	{
-		field: "status",
-		headerName: "Status",
-		width: 130,
-		editable: false,
-		renderCell: (params) => {
-			return <Span value={params.row.status}>{params.row.status}</Span>;
 		},
 	},
 	{
@@ -84,7 +92,18 @@ const columns = [
 	},
 ];
 
-const Orders = () => {
+const rows = [
+	{
+		id: 1,
+		firstName: "Snow",
+		lastName: "Jon",
+		phone: "08039484748",
+		email: "jon.snow@gmail.com",
+		address: "first bank, Bosso rd, minna",
+	},
+];
+
+const Transactions = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -93,29 +112,15 @@ const Orders = () => {
 
 	const { orderList, error, isFetching } = useSelector(getOrders);
 
-	if (isFetching) {
-		return (
-			<Container>
-				<Loading />
-			</Container>
-		);
-	}
-	if (error) {
-		return (
-			<Container>
-				<Alert type="error" text="There was a problem, Try Again" />
-			</Container>
-		);
-	}
 	return (
 		<Container>
-			<Title>All Orders</Title>
+			<Title>Transactions List</Title>
 			<div style={{ height: 550, width: "100%" }}>
 				<DataGrid
 					rows={orderList}
 					columns={columns}
-					getRowId={(row) => row._id}
 					pageSize={10}
+					getRowId={(row) => row._id}
 					// checkboxSelection
 					disableSelectionOnClick
 				/>
@@ -124,4 +129,4 @@ const Orders = () => {
 	);
 };
 
-export default Orders;
+export default Transactions;

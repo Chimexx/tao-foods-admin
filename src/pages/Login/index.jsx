@@ -42,7 +42,7 @@ const Login = () => {
 					<Title>SIGN IN</Title>
 					<Form>
 						<TextField
-							id="outlined-basic"
+							id="username"
 							label="Username"
 							variant="filled"
 							size="small"
@@ -50,7 +50,7 @@ const Login = () => {
 							onChange={(e) => setUsername(e.target.value)}
 						/>
 						<TextField
-							id="outlined-basic"
+							id="password"
 							label="Password"
 							variant="filled"
 							type="password"
