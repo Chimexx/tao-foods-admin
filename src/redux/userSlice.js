@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { fetchUsers, createUsers, deleteUsers, updateUsers } from "./apiRequests";
 
 const userSlice = createSlice({
 	name: "users",
