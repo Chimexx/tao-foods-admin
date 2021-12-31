@@ -2,6 +2,8 @@ import userReducer from "./userSlice";
 import productReducer from "./productSlice";
 import orderReducer from "./orderSlice";
 import authReducer from "./authSlice";
+import toggleReducer from "./toggleSlice";
+
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
 	persistStore,
@@ -25,6 +27,7 @@ const rootReducer = combineReducers({
 	users: userReducer,
 	products: productReducer,
 	orders: orderReducer,
+	toggle: toggleReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

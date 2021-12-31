@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStyles } from "./Topbar.styles";
 import logo from "../../images/tao.svg";
 import { Badge, Button } from "@material-ui/core";
 import { MeetingRoom, NotificationsNone } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { getUser } from "../../redux/authSlice";
+import { menuToggle } from "../../redux/toggleSlice";
 import { fetchOrders, userLogout } from "../../redux/apiRequests";
 import { getOrders } from "../../redux/orderSlice";
+import MenuIcon from "@material-ui/icons/Menu";
 
 const Topbar = () => {
 	const classes = useStyles();
@@ -21,6 +22,9 @@ const Topbar = () => {
 		userLogout(dispatch);
 		history.push("/");
 	};
+	const handleToggle = () => {
+		dispatch(menuToggle());
+	};
 
 	useEffect(() => {
 		fetchOrders(dispatch);
@@ -32,6 +36,9 @@ const Topbar = () => {
 	return (
 		<div className={classes.topbar}>
 			<div className={classes.wrapper}>
+				<div className={classes.menu} onClick={handleToggle}>
+					<MenuIcon />
+				</div>
 				<div className="left">
 					<img src={logo} alt="" className={classes.logo} />
 				</div>

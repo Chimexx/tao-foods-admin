@@ -13,12 +13,13 @@ import { useSelector } from "react-redux";
 
 import { Container, ListItem, Menu, Title, Wrapper, List, Subtitle, DashTitle } from "./Sidebar.styles";
 import { getUser } from "../../redux/authSlice";
+import { getToggle } from "../../redux/toggleSlice";
 
 const Sidebar = () => {
 	const { currentUser } = useSelector(getUser);
-
+	const { toggle } = useSelector(getToggle);
 	return (
-		<Container>
+		<Container active={toggle}>
 			<Wrapper>
 				<Menu>
 					<DashTitle>Dashboard</DashTitle>

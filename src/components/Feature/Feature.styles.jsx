@@ -11,18 +11,19 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	featuredItem: {
 		flex: theme.spacing(1),
+		display: "flex",
+		flexDirection: "column",
 		padding: theme.spacing(3),
 		margin: theme.spacing(1),
 		borderRadius: theme.spacing(1),
-		cursor: "pointer",
-		boxShadow: "1px 1px 1px rgb(0 0 0 / 0.2)",
-
+		backgroundColor: "#f3f3f3",
 		[theme.breakpoints.down("sm")]: {
 			padding: theme.spacing(1),
 		},
 	},
 	title: {
 		fontSize: 20,
+		fontWeight: "300",
 
 		[theme.breakpoints.down("sm")]: {
 			fontSize: 16,

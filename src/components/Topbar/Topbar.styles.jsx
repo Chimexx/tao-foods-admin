@@ -23,6 +23,10 @@ export const useStyles = makeStyles((theme) => ({
 	logo: {
 		width: "100px",
 		cursor: "pointer",
+
+		[theme.breakpoints.down("sm")]: {
+			width: "80px",
+		},
 	},
 	right: {
 		display: "flex",
@@ -41,6 +45,13 @@ export const useStyles = makeStyles((theme) => ({
 	icon: {
 		color: "#555555",
 	},
+	menu: {
+		display: "none",
+		cursor: "pointer",
+		[theme.breakpoints.down("xs")]: {
+			display: "block",
+		},
+	},
 	button: {
 		display: "flex",
 		alignItems: "center",
@@ -49,5 +60,10 @@ export const useStyles = makeStyles((theme) => ({
 		padding: "2px 5px",
 		borderTopRightRadius: "10px",
 		borderBottomRightRadius: "10px",
+
+		[theme.breakpoints.down("xs")]: {
+			height: "25px",
+			padding: "2px 5px",
+		},
 	},
 }));

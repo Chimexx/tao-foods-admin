@@ -6,8 +6,10 @@ export const Container = styled.div`
 	top: 50;
 	min-height: calc(100vh - 50px);
 	background-color: #f3f3f3;
+	transition: all ease-in-out 0.3s;
 
 	@media screen and (max-width: 768px) {
+		display: ${(props) => (props.active === "true" ? "block" : "none")};
 		max-width: 60px;
 	}
 `;
@@ -21,7 +23,6 @@ export const ListItem = styled.div`
 	padding-left: 10px;
 	transition: ease-in-out all 0.2s;
 	/* background-color: ${(props) => (props.active === "true" ? "#ffffff" : "transparent")}; */
-	/* color: ${(props) => (props.active === "true" ? "#ff8400" : "#ffffff")}; */
 
 	@media screen and (max-width: 768px) {
 		justify-content: center;
