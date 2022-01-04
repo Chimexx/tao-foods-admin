@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 const productSlice = createSlice({
 	name: "products",
 	initialState: {
-		products: [],
+		productsList: [],
 		isFetching: false,
 		error: false,
 	},
@@ -16,7 +16,7 @@ const productSlice = createSlice({
 		fetchProductSuccess: (state, action) => {
 			state.isFetching = false;
 			state.error = false;
-			state.products = action.payload;
+			state.productsList = action.payload;
 		},
 		fetchProductFailure: (state) => {
 			state.isFetching = false;
@@ -29,7 +29,7 @@ const productSlice = createSlice({
 		updateProductSuccess: (state, action) => {
 			state.isFetching = false;
 			state.error = false;
-			state.products[state.products.findIndex((item) => item._id === action.payload.id)] =
+			state.productsList[state.products.findIndex((item) => item._id === action.payload.id)] =
 				action.payload.data;
 			toast.success(`${action.payload.data.title} was updated!`, {
 				position: toast.POSITION.BOTTOM_RIGHT,
@@ -47,7 +47,7 @@ const productSlice = createSlice({
 		createProductSuccess: (state, action) => {
 			state.isFetching = false;
 			state.error = false;
-			state.products.push(action.payload);
+			state.productsList.push(action.payload);
 			toast.success(`${action.payload.title} was added!`, {
 				position: toast.POSITION.BOTTOM_RIGHT,
 				autoClose: 3000,
@@ -64,8 +64,8 @@ const productSlice = createSlice({
 		},
 		deleteProductSuccess: (state, action) => {
 			state.isFetching = false;
-			state.products.splice(
-				state.products.findIndex((item) => item._id === action.payload.id),
+			state.productsList.splice(
+				state.productsList.findIndex((item) => item._id === action.payload.id),
 				1
 			);
 			toast.warn("Item deleted!", {

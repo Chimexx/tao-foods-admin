@@ -9,6 +9,10 @@ export const Container = styled.div`
 `;
 export const Wrapper = styled.div`
 	display: flex;
+
+	@media screen and (max-width: 768px) {
+		flex-direction: column;
+	}
 `;
 export const UserList = styled.div`
 	flex: 1;
@@ -28,14 +32,12 @@ export const UserEdit = styled.div`
 	margin: 5px;
 	padding: 10px;
 	background-color: #f3f3f3;
-
-	@media screen and (max-width: 768px) {
-	}
 `;
 export const UserContainer = styled.div`
 	display: block;
 
 	@media screen and (max-width: 768px) {
+		margin-top: 10px;
 	}
 `;
 export const EditContainer = styled.div`
@@ -43,8 +45,14 @@ export const EditContainer = styled.div`
 
 	.input {
 		margin: 5px;
+		width: 100%;
+
+		@media screen and (max-width: 768px) {
+			width: 100%;
+		}
 	}
 	@media screen and (max-width: 768px) {
+		margin-top: 10px;
 	}
 `;
 export const User = styled.div`
@@ -190,11 +198,11 @@ export const PostBtn = styled.button`
 	}
 
 	@media screen and (max-width: 768px) {
-		height: 30px;
-		padding: 2px 0px;
+		height: 40px;
+		padding: 2px 5px;
 		padding-right: 5px;
 		font-size: 12px;
-		font-weight: 300;
+		font-weight: 600;
 		justify-content: space-between;
 	}
 `;

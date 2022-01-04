@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { publicRequest } from "../../redux/requestMethods";
 import OrderChart from "../OrderChart";
+import dayjs from "dayjs";
 
 import { useStyles } from "./Feature.styles";
 const Feature = () => {
@@ -17,8 +18,10 @@ const Feature = () => {
 		getStats();
 	}, []);
 
-	const thisMonth = new Date().getMonth() + 1;
-	const prevMonth = new Date().getMonth();
+	const date = new Date();
+	const thisMonth = dayjs().month() + 1;
+	const prevMonth = parseInt(dayjs(new Date(date.setMonth(date.getMonth() - 1))).format("MM"));
+
 	const currentIncome = incomes.find((income) => income._id === thisMonth);
 	const prevIncome = incomes.find((income) => income._id === prevMonth);
 

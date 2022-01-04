@@ -9,6 +9,10 @@ export const Container = styled.div`
 `;
 export const Wrapper = styled.div`
 	display: flex;
+
+	@media screen and (max-width: 768px) {
+		flex-direction: column;
+	}
 `;
 export const UserList = styled.div`
 	flex: 1;
@@ -38,6 +42,7 @@ export const UsersContainer = styled.div`
 	flex-direction: row;
 
 	@media screen and (max-width: 768px) {
+		margin-top: 10px;
 	}
 `;
 export const EditContainer = styled.div`
@@ -47,6 +52,7 @@ export const EditContainer = styled.div`
 		margin: 5px;
 	}
 	@media screen and (max-width: 768px) {
+		margin-top: 20px;
 	}
 `;
 export const User = styled.div`
@@ -186,11 +192,10 @@ export const PostBtn = styled.button`
 	}
 
 	@media screen and (max-width: 768px) {
-		height: 30px;
+		height: 40px;
 		padding: 2px 0px;
-		padding-right: 5px;
-		font-size: 12px;
-		font-weight: 300;
+		padding-right: 20px;
+		font-size: 16px;
 		justify-content: space-between;
 	}
 `;

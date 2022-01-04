@@ -69,8 +69,8 @@ const Product = () => {
 	const [file, setFile] = React.useState(null);
 	const [loading, setLoading] = React.useState(false);
 
-	const { products } = useSelector(getProducts);
-	const product = products.find((product) => product._id === id);
+	const { productsList } = useSelector(getProducts);
+	const product = productsList.find((product) => product._id === id);
 
 	const handleInStock = (event) => {
 		setInStock(event.target.value);
@@ -173,26 +173,26 @@ const Product = () => {
 					<Cat>
 						<Label>Category</Label>
 						{product.category?.map((cat, index) => (
-							<em>
-								<Description key={index}>{cat}</Description>
-							</em>
+							<Description key={index}>
+								<em>{cat} </em>
+							</Description>
 						))}
 					</Cat>
 					<Hr />
 					<Cat>
 						<Label>In Stock</Label>
-						<em>
-							<Stock value={product.inStock}>{product.inStock === true ? "Yes" : "No"}</Stock>
-						</em>
+
+						<Stock value={product.inStock}>
+							<em>{product.inStock === true ? "Yes" : "No"} </em>
+						</Stock>
 					</Cat>
 					<Hr />
 					<Cat>
 						<Label>Require Sauce</Label>
-						<em>
-							<Stock value={product.requireSauce}>
-								{product.requireSauce === true ? "Yes" : "No"}
-							</Stock>
-						</em>
+
+						<Stock value={product.requireSauce}>
+							<em>{product.requireSauce === true ? "Yes" : "No"} </em>
+						</Stock>
 					</Cat>
 				</ProductDetails>
 				<EditProduct>

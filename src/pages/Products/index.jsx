@@ -87,8 +87,9 @@ const Products = () => {
 	useEffect(() => {
 		fetchProducts(dispatch);
 	}, [dispatch]);
-	const { products, error, isFetching } = useSelector(getProducts);
-	console.log(error);
+
+	const { productsList, error, isFetching } = useSelector(getProducts);
+
 	if (isFetching) {
 		return (
 			<Container>
@@ -99,7 +100,7 @@ const Products = () => {
 	if (error) {
 		return (
 			<Container>
-				<Alert type="error" text="Connection Lost, Try Again" />
+				<Alert type="error" text="There was a problem, Try Again" />
 			</Container>
 		);
 	}
@@ -113,10 +114,11 @@ const Products = () => {
 			</Head>
 			<div style={{ height: 550, width: "100%" }}>
 				<DataGrid
-					rows={products}
+					rows={[...productsList].reverse()}
 					getRowId={(row) => row._id}
 					columns={columns}
 					pageSize={10}
+					size="small"
 					// checkboxSelection
 					disableSelectionOnClick
 				/>

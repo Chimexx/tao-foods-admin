@@ -15,7 +15,7 @@ const OrderChart = () => {
 		const getStats = async () => {
 			try {
 				const res = await publicRequest.get("orders/order-stats");
-				res.data.map((item) =>
+				await res.data.map((item) =>
 					setData((prev) => [
 						...prev,
 						{ month: MONTHS[item._id - 1], total: item.total, num: item._id },
@@ -32,11 +32,12 @@ const OrderChart = () => {
 		return a.num - b.num;
 	});
 
-	console.log(sortedData);
-
 	const options = {
 		chart: {
 			id: "basic-bar",
+			toolbar: {
+				show: false,
+			},
 		},
 		xaxis: {
 			categories: sortedData.map((data) => data.month),
@@ -53,19 +54,21 @@ const OrderChart = () => {
 				breakpoint: 768,
 				options: {
 					chart: {
-						width: 300,
+						width: 325,
 						height: 150,
 					},
 					legend: {
 						show: true,
 					},
+					yaxis: {
+						labels: {
+							offsetX: -15,
+							rotate: -90,
+						},
+					},
 					grid: {
 						padding: {
-							left: 0,
-							right: 0,
-						},
-						margin: {
-							left: 0,
+							left: -5,
 							right: 0,
 						},
 					},

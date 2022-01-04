@@ -28,7 +28,7 @@ const orderSlice = createSlice({
 		updateOrderSuccess: (state, action) => {
 			state.isFetching = false;
 			state.error = false;
-			state.orders[state.orderList.findIndex((item) => item._id) === action.payload.id] =
+			state.orderList[state.orderList.findIndex((item) => item._id === action.payload.id)] =
 				action.payload.data;
 		},
 		updateOrderFailure: (state) => {

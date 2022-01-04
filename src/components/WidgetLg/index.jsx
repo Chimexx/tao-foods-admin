@@ -1,55 +1,43 @@
-import { Container, Title, Table, Tr, Th, Td, Button } from "./WidgetLg.styles";
+import dayjs from "dayjs";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { getOrders } from "../../redux/orderSlice";
+import { Container, Table, Tr, Th, Td, SubTitle, ActionButton } from "./WidgetLg.styles";
 const WidgetLg = () => {
+	const { orderList } = useSelector(getOrders);
+	const orders = [...orderList]
+		.reverse()
+		.filter((order) => order.status === "delivered")
+		.slice(0, 5);
+
 	return (
 		<Container>
-			<Title>Latest Sales</Title>
+			<SubTitle>Recent Deliveries</SubTitle>
 			<Table>
-				<Tr>
-					<Th>Customer</Th>
-					<Th>Date</Th>
-					<Th className="tablehead">Amount</Th>
-					<Th>Status</Th>
-				</Tr>
-				<Tr className="tablerow">
-					<Td className="name">Mike</Td>
-					<Td>20 Nov 2021</Td>
-					<Td>₦6,500</Td>
-					<Td>
-						<Button type="pending">Pending</Button>
-					</Td>
-				</Tr>
-				<Tr className="tablerow">
-					<Td>Mike</Td>
-					<Td>20 Nov 2021</Td>
-					<Td>₦6,500</Td>
-					<Td>
-						<Button type="approved">Approved</Button>
-					</Td>
-				</Tr>
-				<Tr className="tablerow">
-					<Td>Mike</Td>
-					<Td>20 Nov 2021</Td>
-					<Td>₦6,500</Td>
-					<Td>
-						<Button type="rejected">Rejected</Button>
-					</Td>
-				</Tr>
-				<Tr className="tablerow">
-					<Td>Mike</Td>
-					<Td>20 Nov 2021</Td>
-					<Td>₦6,500</Td>
-					<Td>
-						<Button type="approved">Approved</Button>
-					</Td>
-				</Tr>
-				<Tr className="tablerow">
-					<Td>Mike</Td>
-					<Td>20 Nov 2021</Td>
-					<Td>₦6,500</Td>
-					<Td>
-						<Button type="rejected">Rejected</Button>
-					</Td>
-				</Tr>
+				<thead>
+					<Tr>
+						<Th>Customer</Th>
+						<Th>Date</Th>
+						<Th className="tablehead">Amount</Th>
+						<Th>Action</Th>
+					</Tr>
+				</thead>
+				<tbody>
+					{orders.map((order) => {
+						return (
+							<Tr key={order._id} className="tablerow">
+								<Td className="name">{order.shipping.firstName}</Td>
+								<Td id="date"> {dayjs(order.createdAt).format("MMM-DD-YYYY")}</Td>
+								<Td>₦{order.amount}</Td>
+								<Td>
+									<Link to={"/order/" + order._id}>
+										<ActionButton>view</ActionButton>
+									</Link>
+								</Td>
+							</Tr>
+						);
+					})}
+				</tbody>
 			</Table>
 		</Container>
 	);

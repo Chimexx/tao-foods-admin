@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/apiRequests";
 import bg from "../../images/login.jpg";
-import { getUsers } from "../../redux/userSlice";
 
 //styles
 import {

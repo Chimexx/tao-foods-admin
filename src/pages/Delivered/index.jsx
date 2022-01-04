@@ -83,7 +83,7 @@ const columns = [
 
 const Delivered = () => {
 	const { orderList } = useSelector(getOrders);
-	const orders = orderList.filter((order) => order.status === "delivered");
+	const orders = [...orderList].reverse().filter((order) => order.status === "delivered");
 
 	if (!orders) {
 		return <Container>There was an error</Container>;

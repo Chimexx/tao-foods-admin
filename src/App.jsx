@@ -2,7 +2,7 @@ import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-toastify";
-import Orders from "./pages/Orders";
+import Orders from "./pages/Orders/index";
 import Topbar from "./components/Topbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
@@ -20,12 +20,13 @@ import Accounts from "./pages/Accounts";
 import EditAccount from "./pages/UserEdit";
 import Transactions from "./pages/Transactions";
 import { getUser } from "./redux/authSlice";
+import Snackbar from "./components/SnackBar/snackbar";
 
 function App() {
 	const { currentUser } = useSelector(getUser);
-	console.log(currentUser);
 	return (
 		<>
+			<Snackbar />
 			<Router>
 				{!currentUser?.username ? (
 					<Login />

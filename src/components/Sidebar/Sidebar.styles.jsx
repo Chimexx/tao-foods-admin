@@ -22,7 +22,9 @@ export const ListItem = styled.div`
 	margin: 7px 0;
 	padding-left: 10px;
 	transition: ease-in-out all 0.2s;
-	/* background-color: ${(props) => (props.active === "true" ? "#ffffff" : "transparent")}; */
+	/* background-color: ${(props) => (props.active ? "#ffffff" : "")};
+	color: ${(props) => (props.active ? "#ff8400" : "")};
+	border-radius: ${(props) => (props.active ? "20px" : "none")}; */
 
 	@media screen and (max-width: 768px) {
 		justify-content: center;
@@ -34,6 +36,7 @@ export const ListItem = styled.div`
 		font-size: 16;
 		padding: 5px;
 	}
+
 	&:hover {
 		background-color: #ffffff;
 		color: #ff8400;
@@ -56,6 +59,12 @@ export const List = styled.ul`
 	a {
 		color: #555;
 		text-decoration: none;
+	}
+
+	.active {
+		background-color: #ffffff;
+		color: #ff8400;
+		border-radius: 20px;
 	}
 `;
 

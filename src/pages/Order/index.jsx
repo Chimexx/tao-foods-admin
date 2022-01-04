@@ -67,7 +67,7 @@ const Order = () => {
 				</OrderId>
 				{order?.items.map((item) => {
 					return (
-						<OrderItem>
+						<OrderItem key={item._id}>
 							<Image src={item.img} />
 							<OrderInfo>
 								<Wrapper>

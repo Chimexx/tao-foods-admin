@@ -3,6 +3,7 @@ import productReducer from "./productSlice";
 import orderReducer from "./orderSlice";
 import authReducer from "./authSlice";
 import toggleReducer from "./toggleSlice";
+import snackbarReducer from "./snackbarSlice";
 
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
 	products: productReducer,
 	orders: orderReducer,
 	toggle: toggleReducer,
+	snackbar: snackbarReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

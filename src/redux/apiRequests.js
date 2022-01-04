@@ -39,6 +39,7 @@ import {
 	updateOrderStart,
 	updateOrderSuccess,
 } from "./orderSlice";
+import { setSnackbar } from "./snackbarSlice";
 
 //Login request
 export const login = async (dispatch, data) => {
@@ -129,8 +130,22 @@ export const updateOrder = async (id, data, dispatch) => {
 	try {
 		const res = await authRequest.put(`orders/${id}`, data);
 		await dispatch(updateOrderSuccess({ id, data: res.data }));
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "success",
+				snackbarMessage: `${res.data.title} has been updated!`,
+			})
+		);
 	} catch (error) {
 		dispatch(updateOrderFailure());
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "error",
+				snackbarMessage: "Update failed",
+			})
+		);
 		console.log(error);
 	}
 };

@@ -193,7 +193,7 @@ export const ActionBtn = styled.button`
 	font-weight: 600;
 	justify-content: flex-start;
 	align-items: center;
-	margin-right: 10px;
+	margin-right: 20px;
 	box-shadow: ${(props) => (props.disabled ? "none" : "0 1px 3px rgb(0 0 0 / 0.2)")};
 	cursor: pointer;
 	color: ${(props) => (props.status === "delete" ? "#fd2a2a" : "#06af00")};

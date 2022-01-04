@@ -83,7 +83,7 @@ const columns = [
 
 const Pending = () => {
 	const { orderList } = useSelector(getOrders);
-	const orders = orderList.filter((order) => order.status === "pending");
+	const orders = [...orderList].reverse().filter((order) => order.status === "pending");
 
 	if (!orders) {
 		return <Container>There was an error</Container>;

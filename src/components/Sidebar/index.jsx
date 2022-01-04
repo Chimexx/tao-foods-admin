@@ -16,16 +16,20 @@ import { getUser } from "../../redux/authSlice";
 import { getToggle } from "../../redux/toggleSlice";
 
 const Sidebar = () => {
+	// const [isActive, setIsActive] = useState(false);
+
+	const handleActive = (name) => {};
+
 	const { currentUser } = useSelector(getUser);
 	const { toggle } = useSelector(getToggle);
 	return (
 		<Container active={toggle}>
-			<Wrapper>
+			<Wrapper id="wrapper">
 				<Menu>
 					<DashTitle>Dashboard</DashTitle>
 					<List>
 						<Link to="/">
-							<ListItem>
+							<ListItem className="btn" id="home" onClick={() => handleActive("home")}>
 								<Storefront className="icon" />
 								<Subtitle>Home</Subtitle>
 							</ListItem>
@@ -36,19 +40,23 @@ const Sidebar = () => {
 					<Title>Orders</Title>
 					<List>
 						<Link to="/orders">
-							<ListItem id="allOrders">
+							<ListItem
+								className="btn"
+								id="allOrders"
+								onClick={() => handleActive("allOrders")}
+							>
 								<LineStyle className="icon" />
 								<Subtitle>All Orders</Subtitle>
 							</ListItem>
 						</Link>
 						<Link to="/pending-orders">
-							<ListItem className="item">
+							<ListItem id="pending" className="btn" onClick={handleActive("pending")}>
 								<HourglassEmpty className="icon" />
 								<Subtitle>Pending</Subtitle>
 							</ListItem>
 						</Link>
 						<Link to="/delivered-orders">
-							<ListItem className="item">
+							<ListItem className="btn " onClick={handleActive}>
 								<DoneAll className="icon" />
 								<Subtitle>Delivered</Subtitle>
 							</ListItem>
@@ -59,7 +67,7 @@ const Sidebar = () => {
 					<Title>Menu</Title>
 					<List>
 						<Link to="/products">
-							<ListItem>
+							<ListItem className="btn " onClick={handleActive}>
 								<ListAlt className="icon" />
 								<Subtitle>Products</Subtitle>
 							</ListItem>

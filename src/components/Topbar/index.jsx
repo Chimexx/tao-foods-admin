@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useStyles } from "./Topbar.styles";
 import logo from "../../images/tao.svg";
 import { Badge, Button } from "@material-ui/core";
-import { MeetingRoom, NotificationsNone } from "@material-ui/icons";
+import { NotificationsNone } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getUser } from "../../redux/authSlice";
@@ -52,7 +52,7 @@ const Topbar = () => {
 								className={classes.button}
 								onClick={handleLogout}
 							>
-								<MeetingRoom /> Logout
+								Logout
 							</Button>
 						</div>
 					)}

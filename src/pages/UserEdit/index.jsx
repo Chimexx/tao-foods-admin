@@ -21,11 +21,14 @@ import { CheckCircle, Delete } from "@material-ui/icons";
 import { ClassicSpinner } from "react-spinners-kit";
 import { useLocation } from "react-router-dom";
 import { getUsers } from "../../redux/userSlice";
+import { getUser } from "../../redux/authSlice";
 
 const EditAccount = () => {
 	const location = useLocation();
 	const history = useHistory();
 	const id = location.pathname.split("/")[2];
+
+	const { currentUser } = useSelector(getUser);
 
 	const { usersList, isFetching } = useSelector(getUsers);
 	const user = usersList.find((user) => user._id === id);
@@ -54,6 +57,7 @@ const EditAccount = () => {
 					email,
 					password,
 					role,
+					currentUserRole: currentUser.role,
 				},
 				dispatch
 			);

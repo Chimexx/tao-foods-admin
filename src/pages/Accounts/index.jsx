@@ -39,7 +39,6 @@ const Accounts = () => {
 	}, [dispatch]);
 
 	const { usersList, isFetching, error } = useSelector(getUsers);
-	console.log(usersList);
 
 	const handleRole = (e) => {
 		e.target.value === "manager" && setRole("manager");

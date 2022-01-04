@@ -25,7 +25,7 @@ export const useStyles = makeStyles((theme) => ({
 		cursor: "pointer",
 
 		[theme.breakpoints.down("sm")]: {
-			width: "80px",
+			display: "none",
 		},
 	},
 	right: {
@@ -48,18 +48,14 @@ export const useStyles = makeStyles((theme) => ({
 	menu: {
 		display: "none",
 		cursor: "pointer",
+
 		[theme.breakpoints.down("xs")]: {
 			display: "block",
 		},
 	},
 	button: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "space-between",
 		height: "30px",
 		padding: "2px 5px",
-		borderTopRightRadius: "10px",
-		borderBottomRightRadius: "10px",
 
 		[theme.breakpoints.down("xs")]: {
 			height: "25px",

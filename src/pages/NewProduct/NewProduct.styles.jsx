@@ -21,6 +21,7 @@ export const Title = styled.div`
 		padding: 5px;
 		font-weight: 400;
 		font-size: 18px;
+		width: 100%;
 	}
 `;
 
@@ -78,11 +79,10 @@ export const PostBtn = styled.button`
 	}
 
 	@media screen and (max-width: 768px) {
-		height: 30px;
-		padding: 2px 0px;
-		padding-right: 5px;
-		font-size: 12px;
-		font-weight: 300;
+		height: 40px;
+		padding: 2px 5px;
+		padding-right: 20px;
+		font-size: 16px;
 		justify-content: space-between;
 	}
 `;
@@ -106,6 +106,7 @@ export const SwitchGroup = styled.div`
 
 	@media screen and (max-width: 768px) {
 		margin: 10px 0px;
+		padding: 5px 20px;
 	}
 
 	.radio {
@@ -144,13 +145,14 @@ export const SwitchGroup = styled.div`
 export const InputGroup = styled.div`
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	width: 100%;
+	/* width: 100%; */
 	margin-bottom: 20px;
 
 	@media screen and (max-width: 768px) {
 		margin-bottom: 10px;
 		display: block;
-		width: 100%;
+		flex-direction: column;
+		width: 360px;
 	}
 
 	.input {
@@ -165,5 +167,5 @@ export const Wrapper = styled.div`
 	flex: 2;
 	background-color: #ffffff;
 	border-radius: 5px;
-	margin: 1px;
+	/* margin: 1px; */
 `;
