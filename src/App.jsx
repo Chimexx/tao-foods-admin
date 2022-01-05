@@ -1,7 +1,5 @@
 import "./App.css";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Slide } from "react-toastify";
 import Orders from "./pages/Orders/index";
 import Topbar from "./components/Topbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -32,7 +30,6 @@ function App() {
 					<Login />
 				) : (
 					<div className="app">
-						<ToastContainer transition={Slide} />
 						<Topbar />
 						<Sidebar />
 						<>

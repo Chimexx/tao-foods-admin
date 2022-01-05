@@ -79,7 +79,21 @@ export const createUser = async (dispatch, data) => {
 	try {
 		const res = await authRequest.post("auth/register", data);
 		await dispatch(createUserSuccess(res.data));
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "success",
+				snackbarMessage: `A new ${res.data.role} account has been added!- ${res.data.username}`,
+			})
+		);
 	} catch (error) {
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "error",
+				snackbarMessage: "Could not add user",
+			})
+		);
 		dispatch(createUserFailure());
 		console.log(error);
 	}
@@ -90,9 +104,22 @@ export const updateUser = async (id, data, dispatch) => {
 	dispatch(updateUserStart());
 	try {
 		const res = await authRequest.put(`users/${id}`, data);
-		console.log(data);
 		await dispatch(updateUserSuccess({ id, data: res.data }));
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "success",
+				snackbarMessage: `${res.data.username} has been updated!`,
+			})
+		);
 	} catch (error) {
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "error",
+				snackbarMessage: "Update failed",
+			})
+		);
 		dispatch(updateUserFailure());
 		console.log(error);
 	}
@@ -104,9 +131,22 @@ export const deleteUser = async (dispatch, id) => {
 	try {
 		await authRequest.delete(`users/${id}`);
 		await dispatch(deleteUserSuccess(id));
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "success",
+				snackbarMessage: `Account deleted!`,
+			})
+		);
 	} catch (error) {
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "error",
+				snackbarMessage: `Could not delete account`,
+			})
+		);
 		dispatch(deleteUserFailure());
-
 		console.log(error);
 	}
 };
@@ -134,7 +174,7 @@ export const updateOrder = async (id, data, dispatch) => {
 			setSnackbar({
 				snackbarOpen: true,
 				snackbarType: "success",
-				snackbarMessage: `${res.data.title} has been updated!`,
+				snackbarMessage: `Order has been updated!`,
 			})
 		);
 	} catch (error) {
@@ -156,8 +196,22 @@ export const deleteOrder = async (id, dispatch) => {
 	try {
 		await authRequest.delete(`orders/${id}`);
 		await dispatch(deleteOrderSuccess({ id }));
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "success",
+				snackbarMessage: `Order deleted!`,
+			})
+		);
 	} catch (error) {
 		dispatch(deleteOrderFailure());
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "error",
+				snackbarMessage: `Unable to delete order!`,
+			})
+		);
 		console.log(error);
 	}
 };
@@ -180,8 +234,22 @@ export const createProduct = async (data, dispatch) => {
 	try {
 		const res = await authRequest.post("dishes/new", data);
 		await dispatch(createProductSuccess(res.data));
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "success",
+				snackbarMessage: `${res.data.title} has been added!`,
+			})
+		);
 	} catch (error) {
 		dispatch(createProductFailure());
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "error",
+				snackbarMessage: `Unable to add Item!`,
+			})
+		);
 		console.log(error);
 	}
 };
@@ -192,8 +260,22 @@ export const updateProduct = async (id, data, dispatch) => {
 	try {
 		const res = await authRequest.put(`dishes/${id}`, data);
 		await dispatch(updateProductSuccess({ id, data: res.data }));
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "success",
+				snackbarMessage: `${res.data.title} has been updated!`,
+			})
+		);
 	} catch (error) {
 		dispatch(updateProductFailure());
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "error",
+				snackbarMessage: `Unable to update this item!`,
+			})
+		);
 		console.log(error);
 	}
 };
@@ -203,10 +285,23 @@ export const deleteProduct = async (id, dispatch) => {
 	dispatch(deleteProductStart());
 	try {
 		await authRequest.delete(`dishes/${id}`);
-
 		await dispatch(deleteProductSuccess({ id }));
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "success",
+				snackbarMessage: `Item has been deleted!`,
+			})
+		);
 	} catch (error) {
 		dispatch(deleteProductFailure());
+		dispatch(
+			setSnackbar({
+				snackbarOpen: true,
+				snackbarType: "error",
+				snackbarMessage: `Unabke to delete item!`,
+			})
+		);
 		console.log(error);
 	}
 };

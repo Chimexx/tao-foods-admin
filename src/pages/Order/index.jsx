@@ -55,7 +55,6 @@ const Order = () => {
 	const handleDelete = () => {
 		deleteOrder(id, dispatch);
 		history.push("/orders");
-		setLoading(false);
 	};
 	return (
 		<Container>
@@ -127,9 +126,7 @@ const Order = () => {
 								<OrderAmount>
 									<Id>Order Amount</Id> ₦{order.amount}
 								</OrderAmount>
-								<OrderAmount>
-									<Id>Order Quantity</Id> {order.totalQty} Plates
-								</OrderAmount>
+
 								<OrderAmount>
 									<Id>Order Status</Id>
 									<OrderStatus value={order?.status}>{order.status}</OrderStatus>

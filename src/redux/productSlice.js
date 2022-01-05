@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 
 const productSlice = createSlice({
 	name: "products",
@@ -29,12 +28,8 @@ const productSlice = createSlice({
 		updateProductSuccess: (state, action) => {
 			state.isFetching = false;
 			state.error = false;
-			state.productsList[state.products.findIndex((item) => item._id === action.payload.id)] =
+			state.productsList[state.productsList.findIndex((item) => item._id === action.payload.id)] =
 				action.payload.data;
-			toast.success(`${action.payload.data.title} was updated!`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				autoClose: 3000,
-			});
 		},
 		updateProductFailure: (state) => {
 			state.isFetching = false;
@@ -48,10 +43,6 @@ const productSlice = createSlice({
 			state.isFetching = false;
 			state.error = false;
 			state.productsList.push(action.payload);
-			toast.success(`${action.payload.title} was added!`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				autoClose: 3000,
-			});
 		},
 		createProductFailure: (state) => {
 			state.isFetching = false;
@@ -68,10 +59,6 @@ const productSlice = createSlice({
 				state.productsList.findIndex((item) => item._id === action.payload.id),
 				1
 			);
-			toast.warn("Item deleted!", {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				autoClose: 3000,
-			});
 		},
 		deleteProductFailure: (state) => {
 			state.isFetching = false;

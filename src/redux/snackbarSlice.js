@@ -8,7 +8,7 @@ const snackbarSlice = createSlice({
 		snackbarOpen: false,
 	},
 	reducers: {
-		//setSnackbar
+		//Set Snackbar
 		setSnackbar: (state, action) => {
 			state.snackbarOpen = action.payload.snackbarOpen;
 			state.snackbarMessage = action.payload.snackbarMessage;

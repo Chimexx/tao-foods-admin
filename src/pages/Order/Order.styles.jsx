@@ -97,11 +97,11 @@ export const ActionButton = styled.button`
 	}
 
 	@media screen and (max-width: 768px) {
-		height: 30px;
+		height: 40px;
 		padding: 2px 0px;
-		padding-right: 5px;
+		padding-right: 10px;
 		font-size: 12px;
-		font-weight: 300;
+		font-weight: 600;
 		justify-content: space-between;
 	}
 `;

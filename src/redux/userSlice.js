@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 
 const userSlice = createSlice({
 	name: "users",
@@ -31,10 +30,6 @@ const userSlice = createSlice({
 			state.isFetching = false;
 			state.error = false;
 			state.usersList.push(action.payload);
-			toast.success(`${action.payload.username} was added!`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				autoClose: 3000,
-			});
 		},
 		createUserFailure: (state) => {
 			state.isFetching = false;
@@ -50,10 +45,6 @@ const userSlice = createSlice({
 			state.error = false;
 			state.usersList[state.usersList.findIndex((item) => item._id === action.payload.id)] =
 				action.payload.data;
-			toast.success(`${action.payload.data.username} was updated!`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				autoClose: 3000,
-			});
 		},
 		updateUserFailure: (state) => {
 			state.isFetching = false;
@@ -68,10 +59,6 @@ const userSlice = createSlice({
 			state.usersList.splice([state.usersList.findIndex((user) => user._id) === action.payload.id], 1);
 			state.isFetching = false;
 			state.error = false;
-			toast.success("User deleted", {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				autoClose: 3000,
-			});
 		},
 		deleteUserFailure: (state) => {
 			state.isFetching = false;
