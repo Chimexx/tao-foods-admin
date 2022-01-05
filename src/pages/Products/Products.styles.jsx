@@ -67,14 +67,36 @@ export const CreateBtn = styled.button`
 export const Item = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
 
 	img {
-		width: 70px;
-		height: 70px;
+		background-size: cover;
+		border-radius: 50%;
+		width: 50px;
+		height: 50px;
 		margin-right: 20px;
 	}
 	span {
 		font-weight: 500;
+	}
+`;
+
+export const Button = styled.button`
+	padding: 1px 15px;
+	cursor: pointer;
+	border-radius: 10px;
+	border: 1px solid #ff8400;
+	height: 20px;
+	font-weight: 400;
+	color: #ff8400;
+	font-size: 12px;
+	background-color: #fff3e6;
+	transition: all ease-in-out 0.3s;
+
+	&:hover {
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+	}
+
+	@media screen and (max-width: 768px) {
 	}
 `;

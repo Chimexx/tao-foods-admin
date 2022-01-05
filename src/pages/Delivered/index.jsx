@@ -1,108 +1,185 @@
 import React from "react";
-import { Container, Title } from "./Delivered.styles";
-import { DataGrid } from "@material-ui/data-grid";
-import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import Paper from "@material-ui/core/Paper";
 import { useSelector } from "react-redux";
 import { getOrders } from "../../redux/orderSlice";
+import { Link } from "react-router-dom";
+import { Button, Span, Title, Container } from "./Delivered.styles";
 
-const columns = [
-	{ field: "_id", headerName: "ID", width: 100, hide: true },
-	{
-		field: "firstName",
-		headerName: "First name",
-		width: 150,
-		editable: false,
-		renderCell: (params) => {
-			return <span>{params.row.shipping.firstName}</span>;
-		},
-	},
-	{
-		field: "lastName",
-		headerName: "Last name",
-		width: 150,
-		editable: false,
-		renderCell: (params) => {
-			return <span>{params.row.shipping.lastName}</span>;
-		},
-	},
-	{
-		field: "phoneNumber",
-		headerName: "Phone",
-		type: "number",
-		width: 150,
-		editable: false,
-		renderCell: (params) => {
-			return <span>{params.row.shipping.phoneNumber}</span>;
-		},
-	},
-	{
-		field: "totalQty",
-		headerName: "Qty",
-		type: "number",
-		width: 100,
-		editable: false,
-	},
-	{
-		field: "amount",
-		headerName: "Amount",
-		type: "number",
-		width: 150,
-		editable: false,
-		renderCell: (params) => {
-			return <span>₦{params.row.amount}</span>;
-		},
-	},
-	{
-		field: "status",
-		headerName: "Status",
-		width: 110,
-		editable: false,
-		renderCell: (params) => {
-			return <span className="status">{params.row.status}</span>;
-		},
-	},
-	{
-		field: "action",
-		headerName: "Action",
-		width: 140,
-		editable: false,
-		renderCell: (params) => {
-			return (
-				<>
-					<Link to={"/order/" + params.row._id}>
-						<Button size="small" variant="outlined" className="button">
-							Details
-						</Button>
-					</Link>
-				</>
-			);
-		},
-	},
+import dayjs from "dayjs";
+import Loading from "../../components/Loading";
+import Alert from "../../components/Alert";
+
+const headCells = [
+	{ id: "firstName", numeric: false, disablePadding: false, label: "First Name" },
+	{ id: "lastName", numeric: false, disablePadding: false, label: "Last Name" },
+	{ id: "phoneNumber", numeric: false, disablePadding: false, label: "Phone" },
+	{ id: "totalQty", numeric: false, disablePadding: false, label: "Quantity" },
+	{ id: "amount", numeric: false, disablePadding: false, label: "Amount" },
+	{ id: "createdAt", numeric: false, disablePadding: false, label: "Date" },
+	{ id: "status", numeric: false, disablePadding: false, label: "Status" },
+	{ id: "action", numeric: false, disablePadding: false, label: "Action" },
 ];
 
-const Delivered = () => {
-	const { orderList } = useSelector(getOrders);
+function EnhancedTableHead(props) {
+	const { classes, order, orderBy, onRequestSort } = props;
+	const createSortHandler = (property) => (event) => {
+		onRequestSort(event, property);
+	};
+
+	return (
+		<TableHead>
+			<TableRow>
+				{headCells.map((headCell) => (
+					<TableCell
+						key={headCell.id}
+						align={headCell.numeric ? "right" : "left"}
+						padding={headCell.disablePadding ? "none" : "normal"}
+						sortDirection={orderBy === headCell.id ? order : false}
+					>
+						<TableSortLabel
+							active={orderBy === headCell.id}
+							direction={orderBy === headCell.id ? order : "asc"}
+							onClick={createSortHandler(headCell.id)}
+						>
+							{headCell.label}
+							{orderBy === headCell.id ? (
+								<span className={classes.visuallyHidden}>
+									{order === "desc" ? "sorted descending" : "sorted ascending"}
+								</span>
+							) : null}
+						</TableSortLabel>
+					</TableCell>
+				))}
+			</TableRow>
+		</TableHead>
+	);
+}
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		width: "100%",
+	},
+	paper: {
+		width: "100%",
+		marginBottom: theme.spacing(2),
+	},
+	table: {
+		minWidth: 750,
+	},
+	visuallyHidden: {
+		border: 0,
+		clip: "rect(0 0 0 0)",
+		height: 1,
+		margin: -1,
+		overflow: "hidden",
+		padding: 0,
+		position: "absolute",
+		top: 20,
+		width: 1,
+	},
+}));
+
+export default function EnhancedTable() {
+	const classes = useStyles();
+	const [page, setPage] = React.useState(0);
+	const [dense, setDense] = React.useState(true); // hard coded this after disabling the toggle
+	const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+	const { orderList, error, isFetching } = useSelector(getOrders);
+
 	const orders = [...orderList].reverse().filter((order) => order.status === "delivered");
 
-	if (!orders) {
-		return <Container>There was an error</Container>;
-	}
-	return (
-		<Container>
-			<Title>Delivered Orders</Title>
-			<div style={{ height: 550, width: "100%" }}>
-				<DataGrid
-					rows={orders}
-					columns={columns}
-					getRowId={(row) => row._id}
-					pageSize={10}
-					// checkboxSelection
-					disableSelectionOnClick
-				/>
-			</div>
-		</Container>
-	);
-};
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage);
+	};
 
-export default Delivered;
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setPage(0);
+	};
+
+	const emptyRows = rowsPerPage - Math.min(rowsPerPage, orders.length - page * rowsPerPage);
+
+	if (isFetching) {
+		return (
+			<Container>
+				<Loading />
+			</Container>
+		);
+	}
+	if (error) {
+		return (
+			<Container>
+				<Alert type="error" text="There was a problem, Try Again" />
+			</Container>
+		);
+	}
+
+	return (
+		<div className={classes.root}>
+			<Paper className={classes.paper}>
+				<Title>Delivered Orders</Title>
+				<TableContainer>
+					<Table
+						className={classes.table}
+						aria-labelledby="tableTitle"
+						size={dense ? "small" : "medium"}
+						aria-label="enhanced table"
+					>
+						<EnhancedTableHead classes={classes} rowCount={orders.length} />
+						<TableBody>
+							{[...orders]
+								.reverse()
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((row, index) => {
+									return (
+										<TableRow hover tabIndex={-1} key={row._id}>
+											<TableCell align="left">{row.shipping.firstName}</TableCell>
+											<TableCell align="left">{row.shipping.lastName}</TableCell>
+											<TableCell align="left">{row.shipping.phoneNumber}</TableCell>
+											<TableCell align="left">{row.totalQty}</TableCell>
+											<TableCell align="left">{row.amount}</TableCell>
+											<TableCell align="left">
+												{dayjs(row.createdAt).format("MMM-DD-YYYY")}
+											</TableCell>
+											<TableCell align="left">
+												<Span value={row.status}>{row.status}</Span>
+											</TableCell>
+											<TableCell align="left">
+												<Link to={"/order/" + row._id}>
+													<Button>Edit</Button>
+												</Link>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+							{emptyRows > 0 && (
+								<TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+									<TableCell colSpan={6} />
+								</TableRow>
+							)}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				<TablePagination
+					rowsPerPageOptions={[5, 10, 25]}
+					component="div"
+					count={orders.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
+			</Paper>
+		</div>
+	);
+}
