@@ -70,15 +70,15 @@ export const Item = styled.div`
 	justify-content: flex-start;
 
 	img {
+		object-fit: cover;
 		background-size: cover;
-		border-radius: 50%;
 		width: 50px;
 		height: 50px;
 		margin-right: 20px;
 	}
-	span {
-		font-weight: 500;
-	}
+`;
+export const ItemTitle = styled.span`
+	font-weight: 500;
 `;
 
 export const Button = styled.button`

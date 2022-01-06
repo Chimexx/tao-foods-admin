@@ -14,21 +14,23 @@ export const Container = styled.div`
 	}
 `;
 export const Wrapper = styled.div`
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
 	background-color: #fff;
-	border: none;
 	border-radius: 5px;
 	box-shadow: 0 0 5px rgb(0 0 0 / 0.1);
 	max-width: 70vw;
 
 	@media screen and (max-width: 768px) {
+		display: flex;
+		margin: 20px;
 		max-width: 100%;
 		flex-direction: column;
 	}
 `;
 export const Image = styled.img`
 	object-fit: cover;
-	width: 200px;
+	width: 120%;
 
 	@media screen and (max-width: 768px) {
 		width: 100%;
@@ -36,7 +38,6 @@ export const Image = styled.img`
 `;
 
 export const Content = styled.div`
-	flex: 2;
 	padding: 20px;
 	background-color: #fff7dc;
 
@@ -48,7 +49,6 @@ export const Content = styled.div`
 export const Form = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 600px;
 	.input {
 		margin: 10px 0;
 		width: 100%;
@@ -70,15 +70,7 @@ export const Title = styled.h1`
 `;
 export const Input = styled.input`
 	display: flex;
-	/* min-width: 40%;
-	margin: 20px 10px 0 0;
-	padding: 7px;
-	font-size: 16px;
-	font-weight: 500;
-	outline: none;
-	border: none;
-	border-radius: 5px;
-	color: #05021a;*/
+
 	width: 100%;
 	@media screen and (max-width: 768px) {
 		margin: 0 10px;

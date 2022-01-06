@@ -169,7 +169,7 @@ export const updateOrder = async (id, data, dispatch) => {
 
 	try {
 		const res = await authRequest.put(`orders/${id}`, data);
-		await dispatch(updateOrderSuccess({ id, data: res.data }));
+		await dispatch(updateOrderSuccess({ id, data: res.data, dispatch }));
 		dispatch(
 			setSnackbar({
 				snackbarOpen: true,

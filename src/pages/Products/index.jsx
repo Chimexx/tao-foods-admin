@@ -11,7 +11,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Container, Title, Item, CreateBtn, Head, Button } from "./Products.styles";
+import { Container, Title, Item, CreateBtn, Head, Button, ItemTitle } from "./Products.styles";
 import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
 import { fetchProducts } from "../../redux/apiRequests";
@@ -27,7 +27,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-	const { classes, order, orderBy, onRequestSort } = props;
+	const { classes, order, orderBy } = props;
 	const createSortHandler = (property) => (event) => {};
 
 	return (
@@ -149,7 +149,7 @@ export default function EnhancedTable() {
 											<TableCell align="left">
 												<Item>
 													<img src={row.img} alt="" />
-													<span>{row.title}</span>
+													<ItemTitle>{row.title}</ItemTitle>
 												</Item>
 											</TableCell>
 											<TableCell align="left">{row.desc.slice(0, 15)}...</TableCell>

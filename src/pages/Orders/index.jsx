@@ -151,7 +151,7 @@ export default function EnhancedTable() {
 											<TableCell align="left">{row.shipping.lastName}</TableCell>
 											<TableCell align="left">{row.shipping.phoneNumber}</TableCell>
 											<TableCell align="left">{row.totalQty}</TableCell>
-											<TableCell align="left">{row.amount}</TableCell>
+											<TableCell align="left">₦{row.amount}</TableCell>
 											<TableCell align="left">
 												{dayjs(row.createdAt).format("MMM-DD-YYYY")}
 											</TableCell>

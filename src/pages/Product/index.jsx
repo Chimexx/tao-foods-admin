@@ -29,10 +29,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { deleteProduct, updateProduct } from "../../redux/apiRequests";
 import { CheckCircleOutlined, DeleteOutlined } from "@material-ui/icons";
-import { toast } from "react-toastify";
 import { ClassicSpinner } from "react-spinners-kit";
 import { useHistory } from "react-router-dom";
 import { getProducts } from "../../redux/productSlice";
+import { setSnackbar } from "../../redux/snackbarSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -95,10 +95,13 @@ const Product = () => {
 			await deleteObject(imageRef)
 				.then(() => {})
 				.catch((error) => {
-					toast.error("Image doesn't exist", {
-						position: toast.POSITION.BOTTOM_RIGHT,
-						autoClose: 3000,
-					});
+					dispatch(
+						setSnackbar({
+							snackbarOpen: true,
+							snackbarType: "error",
+							snackbarMessage: `Image does not exist!`,
+						})
+					);
 					setLoading(false);
 				});
 			// File deleted successfully
@@ -108,10 +111,13 @@ const Product = () => {
 				"state_changed",
 				(snapshot) => {},
 				(error) => {
-					toast.success(`There was problem, try again`, {
-						position: toast.POSITION.BOTTOM_RIGHT,
-						autoClose: 3000,
-					});
+					dispatch(
+						setSnackbar({
+							snackbarOpen: true,
+							snackbarType: "error",
+							snackbarMessage: `There was a problem, try again`,
+						})
+					);
 					console.log(error);
 				},
 				() => {
@@ -130,6 +136,7 @@ const Product = () => {
 							},
 							dispatch
 						);
+						setLoading(false);
 					});
 				}
 			);
@@ -149,7 +156,6 @@ const Product = () => {
 				},
 				dispatch
 			);
-			console.log(title, price, desc, inStock, requireSauce);
 			setLoading(false);
 		}
 	};
@@ -231,11 +237,13 @@ const Product = () => {
 							className={classes.root}
 							onChange={(e) => setCategory(e.target.value.split(","))}
 						/>
+
 						<div className={classes.root} style={{ marginTop: "10px", padding: 0 }}>
 							<input
 								accept="image/*"
 								className={classes.input}
 								type="file"
+								id="contained-button-file"
 								onChange={(e) => setFile(e.target.files[0])}
 							/>
 							<label htmlFor="contained-button-file" style={{ margin: "5px" }}>

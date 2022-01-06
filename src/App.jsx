@@ -1,5 +1,4 @@
 import "./App.css";
-import "react-toastify/dist/ReactToastify.css";
 import Orders from "./pages/Orders/index";
 import Topbar from "./components/Topbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";

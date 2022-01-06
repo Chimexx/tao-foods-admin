@@ -8,11 +8,7 @@ const toggleSlice = createSlice({
 	reducers: {
 		//Menu toggle
 		menuToggle: (state, action) => {
-			if (state.toggle === "false") {
-				state.toggle = "true";
-			} else {
-				state.toggle = "false";
-			}
+			state.toggle = action.payload;
 		},
 	},
 });

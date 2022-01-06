@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { useStyles } from "./Topbar.styles";
 import logo from "../../images/tao.svg";
 import { Badge, Button } from "@material-ui/core";
-import { NotificationsNone } from "@material-ui/icons";
+import { Clear, NotificationsNone } from "@material-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getUser } from "../../redux/authSlice";
-import { menuToggle } from "../../redux/toggleSlice";
+import { getToggle, menuToggle } from "../../redux/toggleSlice";
 import { fetchOrders, userLogout } from "../../redux/apiRequests";
 import { getOrders } from "../../redux/orderSlice";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -17,13 +17,15 @@ const Topbar = () => {
 	const history = useHistory();
 
 	const { currentUser } = useSelector(getUser);
+	const { toggle } = useSelector(getToggle);
 
 	const handleLogout = () => {
 		userLogout(dispatch);
 		history.push("/");
 	};
-	const handleToggle = () => {
-		dispatch(menuToggle());
+	const handleToggle = (state) => {
+		state === "open" && dispatch(menuToggle("true"));
+		state === "close" && dispatch(menuToggle("false"));
 	};
 
 	useEffect(() => {
@@ -36,9 +38,15 @@ const Topbar = () => {
 	return (
 		<div className={classes.topbar}>
 			<div className={classes.wrapper}>
-				<div className={classes.menu} onClick={handleToggle}>
-					<MenuIcon />
-				</div>
+				{toggle === "true" ? (
+					<div className={classes.menu} onClick={() => handleToggle("close")}>
+						<Clear />
+					</div>
+				) : (
+					<div className={classes.menu} onClick={() => handleToggle("open")}>
+						<MenuIcon />
+					</div>
+				)}
 				<div className="left">
 					<img src={logo} alt="" className={classes.logo} />
 				</div>

@@ -24,8 +24,8 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 import { useDispatch } from "react-redux";
 import { createProduct } from "../../redux/apiRequests";
-import { toast } from "react-toastify";
 import { ClassicSpinner } from "react-spinners-kit";
+import { setSnackbar } from "../../redux/snackbarSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -71,10 +71,13 @@ const NewProduct = () => {
 				"state_changed",
 				(snapshot) => {},
 				(error) => {
-					toast.error(`There was a problem, try again`, {
-						position: toast.POSITION.BOTTOM_RIGHT,
-						autoClose: 3000,
-					});
+					dispatch(
+						setSnackbar({
+							snackbarOpen: true,
+							snackbarType: "error",
+							snackbarMessage: `There was a problem, try again`,
+						})
+					);
 					console.log(error);
 					setLoading(false);
 				},

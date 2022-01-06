@@ -14,7 +14,6 @@ import { fetchOrders } from "../../redux/apiRequests";
 import { getOrders } from "../../redux/orderSlice";
 import { Link } from "react-router-dom";
 import { Button, Span, Title, Container } from "./Transactions.styles";
-import dayjs from "dayjs";
 import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
 

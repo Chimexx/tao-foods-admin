@@ -144,6 +144,7 @@ const Order = () => {
 								label="Status"
 								size="small"
 								variant="filled"
+								value={status}
 								onChange={(e) => setStatus(e.target.value)}
 								helperText="Change the status of this order"
 							>
