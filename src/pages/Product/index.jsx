@@ -78,9 +78,13 @@ const Product = () => {
 	const handleReqSauce = (event) => {
 		setRequireStock(event.target.value);
 	};
-	const handleDelete = () => {
+	const handleDelete = async () => {
 		setLoading(true);
+		const imageRef = ref(storage, `images/${product.imgName}`);
+		// Delete the file
+		await deleteObject(imageRef);
 		deleteProduct(id, dispatch);
+
 		setLoading(false);
 		history.push("/products");
 	};

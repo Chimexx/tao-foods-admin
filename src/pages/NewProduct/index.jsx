@@ -83,8 +83,8 @@ const NewProduct = () => {
 				},
 				() => {
 					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-						dispatch(
-							createProduct({
+						createProduct(
+							{
 								title,
 								price,
 								desc,
@@ -93,8 +93,10 @@ const NewProduct = () => {
 								category,
 								img: downloadURL,
 								imgName: file.name,
-							})
+							},
+							dispatch
 						);
+
 						setTitle("");
 						setPrice("");
 						setDesc("");
