@@ -84,7 +84,6 @@ const Product = () => {
 		// Delete the file
 		await deleteObject(imageRef);
 		deleteProduct(id, dispatch);
-
 		setLoading(false);
 		history.push("/products");
 	};
